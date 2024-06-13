@@ -1,8 +1,15 @@
 "use client"
 
+import { getUserData } from "@/app/_actions/queries";
 import { IoIosSearch } from "react-icons/io";
 
 export default function Hero() {
+
+    const getData = async() => {
+        const data = await getUserData("flamekaiser");
+        console.log(data);
+    }
+
     return (
         <main className="flex flex-col justify-center items-center pt-20">
             <div className="text-4xl">
