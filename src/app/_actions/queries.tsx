@@ -1,6 +1,8 @@
 "use server"
 
-export const getUserData = async (username: string) => {
+import { CovalentClient } from "@covalenthq/client-sdk";
+
+export const getUserAddressFromFCUsername = async (username: string) => {
     const query = `query MyQuery {
     Socials(
         input: {
@@ -25,23 +27,14 @@ export const getUserData = async (username: string) => {
         },
         body: JSON.stringify({ query }),
     });
+    const {data} = (await response.json());
 
-    const {data} = (await response.json()) as {
-        data: {
-            Socials: {
-                Social: {
-                    connectedAddresses: {
-                        address: string;
-                        blockchain: string;
-                        chainId: string;
-                        timestamp: string;
-                    }[];
-                };
-            }[];
-        }
-    }
+    return data.Socials.Social[0].connectedAddresses[0].address;
+}
 
-    console.log(data);
-
-    return data;
+export const getNFTForAddress = async (username: string) => {
+    const address = await getUserAddressFromFCUsername(username)
+    const client = new CovalentClient(`${process.env.COVALENT_API_KEY}`);
+    const resp = await client.NftService.getNftsForAddress("base-mainnet",`${address}`, {"withUncached": true});
+    console.log(resp.data);
 }

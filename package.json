@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@covalenthq/client-sdk": "^1.0.2",
     "@privy-io/react-auth": "^1.69.0",
     "next": "14.2.3",
     "react": "^18",
