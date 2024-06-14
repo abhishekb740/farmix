@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@covalenthq/client-sdk": "^1.0.2",
+    "@nextui-org/react": "^2.4.1",
     "@privy-io/react-auth": "^1.69.0",
+    "framer-motion": "^11.2.10",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",

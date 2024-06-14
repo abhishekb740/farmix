@@ -1,6 +1,6 @@
 "use client"
 
-import { getNFTForAddress } from "@/app/_actions/queries";
+import { calculateSimilarity } from "@/app/_actions/queries";
 import { IoIosSearch } from "react-icons/io";
 import { useState } from "react";
 
@@ -9,7 +9,7 @@ export default function Hero() {
     const [username, setUsername] = useState("");
 
     const getFCUserData = async() => {
-        await getNFTForAddress(username);
+        await calculateSimilarity(username);
     }
 
     return (
