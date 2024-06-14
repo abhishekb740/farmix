@@ -32,9 +32,21 @@ export const getUserAddressFromFCUsername = async (username: string) => {
     return data.Socials.Social[0].connectedAddresses[0].address;
 }
 
-export const getNFTForAddress = async (username: string) => {
-    const address = await getUserAddressFromFCUsername(username)
-    const client = new CovalentClient(`${process.env.COVALENT_API_KEY}`);
+export const getAllNFTsForAddress = async (address: string, client: CovalentClient) => {
     const resp = await client.NftService.getNftsForAddress("base-mainnet",`${address}`, {"withUncached": true});
     console.log(resp.data);
+    return resp.data;
+}
+
+export const getAllTokensForAddress = async (address: string, client: CovalentClient) => {
+    const resp = await client.BalanceService.getTokenBalancesForWalletAddress("base-mainnet",`${address}`);
+    console.log(resp.data);
+    return resp.data;
+}
+
+export const calculateSimilarity = async (username: string) => {
+    const address = await getUserAddressFromFCUsername(username);
+    const client = new CovalentClient(`${process.env.COVALENT_API_KEY}`);
+    await getAllNFTsForAddress(address, client);
+    await getAllTokensForAddress(address, client);
 }
