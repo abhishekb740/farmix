@@ -16,7 +16,8 @@ export default function Hero() {
     const secondaryUsername = username;
     if (user && user.farcaster && user.farcaster.username) {
       const primaryUsername = user.farcaster.username;
-      await calculateSimilarity(primaryUsername, secondaryUsername);
+      const resp = await calculateSimilarity(primaryUsername, secondaryUsername);
+      console.log("Similarity data:", resp);
     } else {
       console.error("User or user.farcaster is undefined");
     }
