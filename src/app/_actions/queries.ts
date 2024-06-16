@@ -108,17 +108,20 @@ const getAllTokensForAddress = async (address: string, client: CovalentClient): 
   return resp.data?.items || [];
 };
 
-// Calculate similarity between two arrays as a percentage.
-const calculateArraySimilarity = (array1: any[], array2: any[]): number => {
-  if (!array1.length || !array2.length) return 0; // Return 0 if either array is empty
+// Calculate similarity between two arrays as a percentage and collect common elements.
+const calculateArraySimilarity = (array1: any[], array2: any[]): { similarity: number, common: any[] } => {
+  if (!array1.length || !array2.length) return { similarity: 0, common: [] }; // Return 0 if either array is empty
   const set1 = new Set(array1);
   const set2 = new Set(array2);
   const intersection = new Set([...set1].filter((x) => set2.has(x)));
-  return (intersection.size / Math.max(set1.size, set2.size)) * 100;
+  return {
+    similarity: (intersection.size / Math.max(set1.size, set2.size)) * 100,
+    common: [...intersection]
+  };
 };
 
-// Main function to calculate similarity between two users.
-export const calculateSimilarity = async (primaryUsername: string, secondaryUsername: string): Promise<number> => {
+// Main function to calculate similarity between two users and collect common data.
+export const calculateSimilarity = async (primaryUsername: string, secondaryUsername: string): Promise<any> => {
   const primaryAddress = await getUserAddressFromFCUsername(primaryUsername);
   const secondaryAddress = await getUserAddressFromFCUsername(secondaryUsername);
 
@@ -147,18 +150,24 @@ export const calculateSimilarity = async (primaryUsername: string, secondaryUser
   const primaryFollowings = primaryFollowingData.length ? primaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
   const secondaryFollowings = secondaryFollowingData.length ? secondaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
 
-  const nftSimilarity = calculateArraySimilarity(primaryNfts, secondaryNfts);
-  console.log(`NFT similarity: ${nftSimilarity}`);
+  const nftSimilarityResult = calculateArraySimilarity(primaryNfts, secondaryNfts);
+  console.log(`NFT similarity: ${nftSimilarityResult.similarity}`);
 
-  const tokenSimilarity = calculateArraySimilarity(primaryTokens, secondaryTokens);
-  console.log(`Token similarity: ${tokenSimilarity}`);
+  const tokenSimilarityResult = calculateArraySimilarity(primaryTokens, secondaryTokens);
+  console.log(`Token similarity: ${tokenSimilarityResult.similarity}`);
 
-  const followingSimilarity = calculateArraySimilarity(primaryFollowings, secondaryFollowings);
-  console.log(`Following similarity: ${followingSimilarity}`);
+  const followingSimilarityResult = calculateArraySimilarity(primaryFollowings, secondaryFollowings);
+  console.log(`Following similarity: ${followingSimilarityResult.similarity}`);
 
-  const validSimilarities = [nftSimilarity, tokenSimilarity, followingSimilarity].filter(similarity => similarity > 0);
+  const validSimilarities = [nftSimilarityResult.similarity, tokenSimilarityResult.similarity, followingSimilarityResult.similarity].filter(similarity => similarity > 0);
   const similarityScore = validSimilarities.length ? validSimilarities.reduce((a, b) => a + b) / validSimilarities.length : 0;
 
   console.log(`Similarity score: ${similarityScore}`);
-  return similarityScore;
+
+  return {
+    similarityScore,
+    commonNFTs: nftSimilarityResult.common,
+    commonTokens: tokenSimilarityResult.common,
+    commonFollowers: followingSimilarityResult.common,
+  };
 };
