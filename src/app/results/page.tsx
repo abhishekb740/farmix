@@ -30,10 +30,10 @@ export default function Results() {
     }
   }, [searchParams]);
 
-  const dummyImage = 'https://via.placeholder.com/32'; // Dummy image URL
+  const dummyImage = 'https://via.placeholder.com/32';
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4 gap-4">
+    <main className="flex flex-col items-center min-h-screen p-4 gap-6">
       <h1 className="text-4xl mb-4">
         Similarity Results Between {primaryUsername} and {secondaryUsername}
       </h1>
@@ -83,16 +83,17 @@ export default function Results() {
           <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
             {commonFollowers.length > 0 ? (
               commonFollowers.map((follower, index) => (
-                <div key={index} className="mb-2">
-                  <a
-                    href={`https://warpcast.com/${follower}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:underline"
-                  >
-                    {follower}
-                  </a>
-                </div>
+                <a
+                  key={index}
+                  href={`https://warpcast.com/${follower}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mb-2 flex items-center space-x-2 border border-neutral-300 rounded-md p-4 hover:bg-gray-700"
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <img src="/warpcast.svg" height={25} width={25} alt="Warpcast"/>
+                  <div>{follower}</div>
+                </a>
               ))
             ) : (
               <p>No Common Followers Found</p>
@@ -102,7 +103,6 @@ export default function Results() {
       </div>
       <div>
         Share it on Warpcast?
-        
       </div>
     </main>
   );
