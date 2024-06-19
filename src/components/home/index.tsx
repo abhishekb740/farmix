@@ -20,16 +20,15 @@ export default function Hero() {
       const resp = await calculateSimilarity(primaryUsername, secondaryUsername);
       console.log("Similarity data:", resp);
 
-      // Navigate to the results page with the data
-      // router.push(
-      //   `/results?similarityScore=${resp.similarityScore}&commonNFTs=${encodeURIComponent(
-      //     JSON.stringify(resp.commonNFTs)
-      //   )}&commonTokens=${encodeURIComponent(
-      //     JSON.stringify(resp.commonTokens)
-      //   )}&commonFollowers=${encodeURIComponent(
-      //     JSON.stringify(resp.commonFollowers)
-      //   )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
-      // );
+      router.push(
+        `/results?similarityScore=${resp.similarityScore}&commonNFTs=${encodeURIComponent(
+          JSON.stringify(resp.commonNFTs)
+        )}&commonTokens=${encodeURIComponent(
+          JSON.stringify(resp.commonTokens)
+        )}&commonFollowers=${encodeURIComponent(
+          JSON.stringify(resp.commonFollowers)
+        )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
+      );
     } else {
       console.error("User or user.farcaster is undefined");
     }
