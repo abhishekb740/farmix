@@ -115,8 +115,13 @@ export default function Results() {
           </div>
         </div>
       </div>
-      <div>
-        Share it on Warpcast?
+      <div className="flex flex-col">
+        <div>
+          Share it on Warpcast?
+        </div>
+        <div>
+          
+        </div>
       </div>
     </main>
   );

@@ -18,10 +18,10 @@ export default function Navbar() {
                 <Button onClick={login} disabled={disableLogin} className='bg-[#3fc9f3] shadow-[0_0_5px_#B2F1A8] text-black rounded-md py-1 px-3 flex flex-row justify-center items-center'>
                     {authenticated &&
                         <div>
-                            <img src={user?.farcaster?.pfp} alt="Profile Picture" className='w-8 h-8 rounded-full' />
+                            <img src={user?.farcaster?.pfp || ''} alt="Profile Picture" className='w-8 h-8 rounded-full' />
                         </div>
                     }
-                    {authenticated ? `${user?.farcaster?.username}` : `Login`}
+                    {authenticated ? `${user?.farcaster?.username || ''}` : `Login`}
                 </Button>
             </div>
         </div>
