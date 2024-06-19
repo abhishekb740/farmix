@@ -35,6 +35,12 @@ interface TokenData {
   contract_ticker_symbol: string;
 }
 
+interface SocialProfile {
+  profileDisplayName: string;
+  profileImage: string;
+}
+
+
 // Fetch user address from username using Farcaster.
 const getUserAddressFromFCUsername = async (username: string): Promise<string | null> => {
   const query = `query {
@@ -91,7 +97,53 @@ const getUserFollowingsForAddress = async (address: string): Promise<Following[]
   });
 
   const { data } = await response.json();
+  console.log(data.Farcaster.Following[0].followingAddress.socials);
   return data.Farcaster.Following || [];
+};
+
+const getProfileDetails = async (username: string): Promise<SocialProfile | null> => {
+  const query = `query MyQuery {
+    Socials(input: {filter: {dappName: {_eq: farcaster}, profileName: {_eq: "${username}"}}, blockchain: ethereum}) {
+      Social {
+        profileDisplayName
+        profileImage
+      }
+    }
+  }`;
+
+  const response = await fetch("https://api.airstack.xyz/gql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: process.env.AIRSTACK_API_KEY!,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  const { data } = await response.json();
+
+  return data.Socials.Social[0] || null;
+};
+
+const getFollowingsProfileDetails = async (address: string) => {
+  const followings = await getUserFollowingsForAddress(address);
+
+  const profiles = await Promise.all(
+    followings.map(async (following) => {
+      const username = following.followingAddress.socials[0]?.profileName;
+      if (username) {
+        const profileDetails = await getProfileDetails(username);
+        // console.log("profileDetails",  profileDetails?.profileImage);
+        return {
+          username,
+          profileDetails
+        };
+      }
+      return null;
+    })
+  );
+
+  return profiles.filter(profile => profile !== null);
 };
 
 // Fetch all NFTs for a given address.
@@ -138,8 +190,8 @@ export const calculateSimilarity = async (primaryUsername: string, secondaryUser
   const primaryTokenData = await getAllTokensForAddress(primaryAddress, client);
   const secondaryTokenData = await getAllTokensForAddress(secondaryAddress, client);
 
-  const primaryFollowingData = await getUserFollowingsForAddress(primaryAddress);
-  const secondaryFollowingData = await getUserFollowingsForAddress(secondaryAddress);
+  const primaryFollowingData = await getFollowingsProfileDetails(primaryAddress);
+  const secondaryFollowingData = await getFollowingsProfileDetails(secondaryAddress);
 
   const primaryNfts = primaryNftData.length ? primaryNftData.map(item => item.nft_data?.[0]?.external_data?.image).filter(image => image) : [];
   const secondaryNfts = secondaryNftData.length ? secondaryNftData.map(item => item.nft_data?.[0]?.external_data?.image).filter(image => image) : [];
@@ -147,8 +199,23 @@ export const calculateSimilarity = async (primaryUsername: string, secondaryUser
   const primaryTokens = primaryTokenData.length ? primaryTokenData.map(item => item.contract_ticker_symbol) : [];
   const secondaryTokens = secondaryTokenData.length ? secondaryTokenData.map(item => item.contract_ticker_symbol) : [];
 
-  const primaryFollowings = primaryFollowingData.length ? primaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
-  const secondaryFollowings = secondaryFollowingData.length ? secondaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
+  // const primaryFollowings = primaryFollowingData.length ? primaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
+  // const secondaryFollowings = secondaryFollowingData.length ? secondaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
+
+  const primaryFollowings = primaryFollowingData.length 
+  ? primaryFollowingData.map(following => ({
+    profileDisplayName: following?.profileDetails?.profileDisplayName,
+    username: following?.username,
+    profileImage: following?.profileDetails?.profileImage
+  })): [];
+
+  const secondaryFollowings = secondaryFollowingData.length 
+  ? secondaryFollowingData.map(following => ({
+      profileDisplayName: following?.profileDetails?.profileDisplayName,
+      username: following?.username,
+      profileImage: following?.profileDetails?.profileImage
+    }))
+  : [];
 
   const nftSimilarityResult = calculateArraySimilarity(primaryNfts, secondaryNfts);
   console.log(`NFT similarity: ${nftSimilarityResult.similarity}`);
@@ -164,10 +231,13 @@ export const calculateSimilarity = async (primaryUsername: string, secondaryUser
 
   console.log(`Similarity score: ${similarityScore}`);
 
+  console.log(primaryFollowings);
   return {
     similarityScore,
     commonNFTs: nftSimilarityResult.common,
     commonTokens: tokenSimilarityResult.common,
     commonFollowers: followingSimilarityResult.common,
   };
+
+  
 };
