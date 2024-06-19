@@ -87,7 +87,7 @@ export default function Results() {
           </div>
         </div>
         <div className="w-1/3">
-          <h2 className="text-2xl mb-2">Common Followers</h2>
+          <h2 className="text-2xl mb-2">Common Following</h2>
           <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
             {commonFollowers.length > 0 ? (
               commonFollowers.map((follower, index) => (
