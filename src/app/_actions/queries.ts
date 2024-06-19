@@ -40,6 +40,11 @@ interface SocialProfile {
   profileImage: string;
 }
 
+interface ProfileDetails {
+  profileDisplayName: string;
+  username: string;
+  profileImage: string;
+}
 
 // Fetch user address from username using Farcaster.
 const getUserAddressFromFCUsername = async (username: string): Promise<string | null> => {
@@ -97,13 +102,13 @@ const getUserFollowingsForAddress = async (address: string): Promise<Following[]
   });
 
   const { data } = await response.json();
-  console.log(data.Farcaster.Following[0].followingAddress.socials);
   return data.Farcaster.Following || [];
 };
 
+// Fetch profile details using username.
 const getProfileDetails = async (username: string): Promise<SocialProfile | null> => {
-  const query = `query MyQuery {
-    Socials(input: {filter: {dappName: {_eq: farcaster}, profileName: {_eq: "${username}"}}, blockchain: ethereum}) {
+  const query = `query {
+    Socials(input: { filter: { dappName: { _eq: farcaster }, profileName: { _eq: "${username}" } }, blockchain: ethereum }) {
       Social {
         profileDisplayName
         profileImage
@@ -125,7 +130,8 @@ const getProfileDetails = async (username: string): Promise<SocialProfile | null
   return data.Socials.Social[0] || null;
 };
 
-const getFollowingsProfileDetails = async (address: string) => {
+// Get profile details for all followings of a given address.
+const getFollowingsProfileDetails = async (address: string): Promise<ProfileDetails[]> => {
   const followings = await getUserFollowingsForAddress(address);
 
   const profiles = await Promise.all(
@@ -133,7 +139,6 @@ const getFollowingsProfileDetails = async (address: string) => {
       const username = following.followingAddress.socials[0]?.profileName;
       if (username) {
         const profileDetails = await getProfileDetails(username);
-        // console.log("profileDetails",  profileDetails?.profileImage);
         return {
           username,
           profileDetails
@@ -143,20 +148,22 @@ const getFollowingsProfileDetails = async (address: string) => {
     })
   );
 
-  return profiles.filter(profile => profile !== null);
+  return profiles.filter(profile => profile !== null).map(profile => ({
+    profileDisplayName: profile?.profileDetails?.profileDisplayName,
+    username: profile?.username,
+    profileImage: profile?.profileDetails?.profileImage
+  })) as ProfileDetails[];
 };
 
 // Fetch all NFTs for a given address.
 const getAllNFTsForAddress = async (address: string, client: CovalentClient): Promise<NFTData[]> => {
   const resp = await client.NftService.getNftsForAddress("base-mainnet", address, { withUncached: true });
-  console.log(`Fetching NFT data for user`);
   return resp.data?.items || [];
 };
 
 // Fetch all tokens for a given address.
 const getAllTokensForAddress = async (address: string, client: CovalentClient): Promise<TokenData[]> => {
   const resp = await client.BalanceService.getTokenBalancesForWalletAddress("base-mainnet", address);
-  console.log(`Fetching token data for user`);
   return resp.data?.items || [];
 };
 
@@ -166,9 +173,26 @@ const calculateArraySimilarity = (array1: any[], array2: any[]): { similarity: n
   const set1 = new Set(array1);
   const set2 = new Set(array2);
   const intersection = new Set([...set1].filter((x) => set2.has(x)));
+  const intersectionArray = Array.from(intersection);
   return {
-    similarity: (intersection.size / Math.max(set1.size, set2.size)) * 100,
-    common: [...intersection]
+    similarity: (intersectionArray.length / Math.max(set1.size, set2.size)) * 100,
+    common: intersectionArray
+  };
+};
+
+// Calculate similarity between two arrays of objects as a percentage and collect common elements.
+const calculateObjectArraySimilarity = (array1: any[], array2: any[], key: string): { similarity: number, common: any[] } => {
+  if (!array1.length || !array2.length) return { similarity: 0, common: [] }; // Return 0 if either array is empty
+
+  const map1 = new Map(array1.map(item => [item[key], item]));
+  const map2 = new Map(array2.map(item => [item[key], item]));
+
+  const commonKeys = [...map1.keys()].filter(key => map2.has(key));
+  const common = commonKeys.map(key => map1.get(key));
+
+  return {
+    similarity: (commonKeys.length / Math.max(array1.length, array2.length)) * 100,
+    common: common
   };
 };
 
@@ -199,45 +223,17 @@ export const calculateSimilarity = async (primaryUsername: string, secondaryUser
   const primaryTokens = primaryTokenData.length ? primaryTokenData.map(item => item.contract_ticker_symbol) : [];
   const secondaryTokens = secondaryTokenData.length ? secondaryTokenData.map(item => item.contract_ticker_symbol) : [];
 
-  // const primaryFollowings = primaryFollowingData.length ? primaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
-  // const secondaryFollowings = secondaryFollowingData.length ? secondaryFollowingData.map(following => following.followingAddress.socials[0]?.profileName) : [];
-
-  const primaryFollowings = primaryFollowingData.length 
-  ? primaryFollowingData.map(following => ({
-    profileDisplayName: following?.profileDetails?.profileDisplayName,
-    username: following?.username,
-    profileImage: following?.profileDetails?.profileImage
-  })): [];
-
-  const secondaryFollowings = secondaryFollowingData.length 
-  ? secondaryFollowingData.map(following => ({
-      profileDisplayName: following?.profileDetails?.profileDisplayName,
-      username: following?.username,
-      profileImage: following?.profileDetails?.profileImage
-    }))
-  : [];
-
   const nftSimilarityResult = calculateArraySimilarity(primaryNfts, secondaryNfts);
-  console.log(`NFT similarity: ${nftSimilarityResult.similarity}`);
-
   const tokenSimilarityResult = calculateArraySimilarity(primaryTokens, secondaryTokens);
-  console.log(`Token similarity: ${tokenSimilarityResult.similarity}`);
-
-  const followingSimilarityResult = calculateArraySimilarity(primaryFollowings, secondaryFollowings);
-  console.log(`Following similarity: ${followingSimilarityResult.similarity}`);
+  const followingSimilarityResult = calculateObjectArraySimilarity(primaryFollowingData, secondaryFollowingData, 'username');
 
   const validSimilarities = [nftSimilarityResult.similarity, tokenSimilarityResult.similarity, followingSimilarityResult.similarity].filter(similarity => similarity > 0);
   const similarityScore = validSimilarities.length ? validSimilarities.reduce((a, b) => a + b) / validSimilarities.length : 0;
 
-  console.log(`Similarity score: ${similarityScore}`);
-
-  console.log(primaryFollowings);
   return {
     similarityScore,
     commonNFTs: nftSimilarityResult.common,
     commonTokens: tokenSimilarityResult.common,
     commonFollowers: followingSimilarityResult.common,
   };
-
-  
 };

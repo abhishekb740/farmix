@@ -2,7 +2,13 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRouter  } from "next/navigation";
+import { useRouter } from "next/navigation";
+
+interface Following {
+  username: string;
+  profileImage?: string;
+  profileDisplayName?: string;
+}
 
 export default function Results() {
   const router = useRouter();
@@ -71,13 +77,8 @@ export default function Results() {
           <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
             {commonTokens.length > 0 ? (
               commonTokens.map((token, index) => (
-                <div key={index} className="mb-2 flex items-center space-x-2">
-                  <img
-                    src={`https://api.iconify.design/cryptocurrency/${token.toLowerCase()}.svg`}
-                    onError={(e) => e.currentTarget.src = dummyImage}
-                    alt={token}
-                    className="w-8 h-8"
-                  />
+                <div key={index} className="mb-2 flex flex-row gap-2 items-center space-x-2 border p-4 rounded-md">
+                  <div className="bg-gradient-to-b from-violet-500 to-blue-600 w-8 h-8 rounded-full"></div>
                   <div>{token}</div>
                 </div>
               ))
@@ -90,17 +91,22 @@ export default function Results() {
           <h2 className="text-2xl mb-2">Common Following</h2>
           <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
             {commonFollowers.length > 0 ? (
-              commonFollowers.map((follower, index) => (
+              commonFollowers.map((following: Following, index) => (
                 <a
                   key={index}
-                  href={`https://warpcast.com/${follower}`}
+                  href={`https://warpcast.com/${following.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block mb-2 flex items-center space-x-2 border border-neutral-300 rounded-md p-4 hover:bg-gray-700"
+                  className="mb-2 flex items-center space-x-2 border border-neutral-300 rounded-md p-4 hover:bg-gray-700"
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                  <img src="/warpcast.svg" height={25} width={25} alt="Warpcast" />
-                  <div>{follower}</div>
+                  <img
+                    src={following.profileImage || '/warpcast.svg'}
+                    onError={(e) => e.currentTarget.src = '/warpcast.svg'}
+                    alt={following?.profileDisplayName}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div>{following.profileDisplayName}</div>
                 </a>
               ))
             ) : (
