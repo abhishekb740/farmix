@@ -20,7 +20,6 @@ export default function Hero() {
       const resp = await calculateSimilarity(primaryUsername, secondaryUsername);
       console.log("Similarity data:", resp);
 
-      // Navigate to the results page with the data
       router.push(
         `/results?similarityScore=${resp.similarityScore}&commonNFTs=${encodeURIComponent(
           JSON.stringify(resp.commonNFTs)
