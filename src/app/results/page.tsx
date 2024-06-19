@@ -1,8 +1,9 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Following {
   username: string;
@@ -10,7 +11,7 @@ interface Following {
   profileDisplayName?: string;
 }
 
-export default function Results() {
+function ResultsComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [similarityScore, setSimilarityScore] = useState(0);
@@ -120,9 +121,17 @@ export default function Results() {
           Share it on Warpcast?
         </div>
         <div>
-          
+
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Results() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResultsComponent />
+    </Suspense>
   );
 }
