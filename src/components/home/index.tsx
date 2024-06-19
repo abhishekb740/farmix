@@ -5,11 +5,12 @@ import { IoIosSearch } from "react-icons/io";
 import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { Button, Tooltip } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
   const [username, setUsername] = useState("");
   const { ready, authenticated, user } = usePrivy();
-  // Disable login when Privy is not ready or the user is already authenticated
+  const router = useRouter();
   const disableSearching = !ready || (ready && authenticated);
 
   const getFCUserData = async () => {
@@ -18,6 +19,17 @@ export default function Hero() {
       const primaryUsername = user.farcaster.username;
       const resp = await calculateSimilarity(primaryUsername, secondaryUsername);
       console.log("Similarity data:", resp);
+
+      // Navigate to the results page with the data
+      router.push(
+        `/results?similarityScore=${resp.similarityScore}&commonNFTs=${encodeURIComponent(
+          JSON.stringify(resp.commonNFTs)
+        )}&commonTokens=${encodeURIComponent(
+          JSON.stringify(resp.commonTokens)
+        )}&commonFollowers=${encodeURIComponent(
+          JSON.stringify(resp.commonFollowers)
+        )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
+      );
     } else {
       console.error("User or user.farcaster is undefined");
     }
