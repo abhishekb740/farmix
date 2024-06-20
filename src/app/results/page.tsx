@@ -62,7 +62,7 @@ function ResultsComponent() {
                 <div key={index} className="mb-4 p-2 border-b border-gray-500">
                   <div className="text-center mb-2">NFT {index + 1}</div>
                   {nft ? (
-                    <img src={nft} alt={`NFT ${index}`} className="w-full h-24 object-contain mb-2" />
+                    <img src={nft} alt={`NFT ${index+1}`} className="w-full h-24 object-contain mb-2" />
                   ) : (
                     <div>Image not available</div>
                   )}
