@@ -42,55 +42,57 @@ function ResultsComponent() {
   const dummyImage = 'https://via.placeholder.com/32';
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4 gap-6">
+    <main className="flex flex-col items-center min-h-screen p-4 gap-4 bg-black text-white font-sans">
       <button
         onClick={() => router.push('/')}
-        className="absolute top-4 left-4 bg-[#3fc9f3] text-black px-4 py-2 rounded"
+        className="absolute top-5 left-8 bg-[#3fc9f3] text-black px-4 py-2 rounded hover:bg-[#35b0d6] transition-colors shadow-lg"
       >
-        Home
+        <div className='font-bold'>
+          Home
+        </div>
       </button>
-      <h1 className="text-3xl mb-4">
-        Similarity Results Between {primaryUsername} and {secondaryUsername}
+      <h1 className="text-3xl mb-6 font-extrabold text-center">
+        Similarity Analysis: {primaryUsername} 🔍 {secondaryUsername}
       </h1>
-      <div className="text-2xl mb-6">Similarity Score: {similarityScore.toFixed(2)}%</div>
-      <div className="w-full flex flex-row justify-around space-x-4">
-        <div className="w-1/3">
-          <h2 className="text-2xl mb-2">Common NFTs</h2>
-          <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
+      <div className="text-2xl mb-8 font-semibold">Similarity Score: {similarityScore.toFixed(2)}%</div>
+      <div className="w-full flex flex-col md:flex-row justify-around space-x-0 md:space-x-6 border border-gray-700 rounded-md p-4 bg-gray-900 bg-opacity-50 shadow-lg">
+        <div className="w-full md:w-1/3 mb-4 md:mb-0">
+          <h2 className="text-2xl mb-4 font-bold text-center border-b border-gray-700 pb-2">Shared NFTs</h2>
+          <div className="h-[21rem] scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
             {commonNFTs.length > 0 ? (
               commonNFTs.map((nft, index) => (
-                <div key={index} className="mb-4 p-2 border-b border-gray-500">
+                <div key={index} className="mb-4 p-2 border-b border-gray-600">
                   <div className="text-center mb-2">NFT {index + 1}</div>
                   {nft ? (
-                    <img src={nft} alt={`NFT ${index+1}`} className="w-full h-24 object-contain mb-2" />
+                    <img src={nft} alt={`NFT ${index + 1}`} className="w-full h-24 object-contain mb-2 rounded-md shadow-md" />
                   ) : (
-                    <div>Image not available</div>
+                    <div className="text-center">Image not available</div>
                   )}
                 </div>
               ))
             ) : (
-              <p>No Common NFTs Found</p>
+              <p className="text-center">No Shared NFTs Found</p>
             )}
           </div>
         </div>
-        <div className="w-1/3">
-          <h2 className="text-2xl mb-2">Common Tokens</h2>
-          <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
+        <div className="w-full md:w-1/3 mb-4 md:mb-0">
+          <h2 className="text-2xl mb-4 font-bold text-center border-b border-gray-700 pb-2">Shared Tokens</h2>
+          <div className="h-[21rem] scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
             {commonTokens.length > 0 ? (
               commonTokens.map((token, index) => (
-                <div key={index} className="mb-2 flex flex-row gap-2 items-center space-x-2 border p-4 rounded-md">
-                  <div className="bg-gradient-to-b from-violet-500 to-blue-600 w-8 h-8 rounded-full"></div>
-                  <div>{token}</div>
+                <div key={index} className="mb-2 flex flex-row gap-2 items-center border p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors shadow-md">
+                  <div className="bg-gradient-to-b from-violet-500 to-blue-600 w-8 h-8 rounded-full shadow-lg"></div>
+                  <div className="text-lg font-medium">{token}</div>
                 </div>
               ))
             ) : (
-              <p>No Common Tokens Found</p>
+              <p className="text-center">No Common Tokens Found</p>
             )}
           </div>
         </div>
-        <div className="w-1/3">
-          <h2 className="text-2xl mb-2">Common Following</h2>
-          <div className="h-96 overflow-y-auto bg-white bg-opacity-10 p-4 rounded-lg">
+        <div className="w-full md:w-1/3">
+          <h2 className="text-2xl mb-4 font-bold text-center border-b border-gray-700 pb-2">Shared Followers</h2>
+          <div className="h-[21rem] scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
             {commonFollowers.length > 0 ? (
               commonFollowers.map((following: Following, index) => (
                 <a
@@ -98,31 +100,33 @@ function ResultsComponent() {
                   href={`https://warpcast.com/${following.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mb-2 flex items-center space-x-2 border border-neutral-300 rounded-md p-4 hover:bg-gray-700"
+                  className="mb-2 flex items-center space-x-2 border border-neutral-300 rounded-md p-4 hover:bg-gray-700 transition-colors shadow-md"
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                   <img
                     src={following.profileImage || '/warpcast.svg'}
                     onError={(e) => e.currentTarget.src = '/warpcast.svg'}
                     alt={following?.profileDisplayName}
-                    className="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-full shadow-md"
                   />
-                  <div>{following.profileDisplayName}</div>
+                  <div className="text-lg font-medium">{following.profileDisplayName}</div>
                 </a>
               ))
             ) : (
-              <p>No Common Followers Found</p>
+              <p className="text-center">No Shared Followers Found</p>
             )}
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
-        <div>
-          Share it on Warpcast?
-        </div>
-        <div>
-
-        </div>
+      <div className="flex flex-row items-center justify-center mt-4 gap-4">
+        <button className="text-xl bg-[#3fc9f3] text-black px-4 py-1 rounded hover:bg-[#35b0d6] transition-colors shadow-lg" onClick={() => {
+          window.open(
+            `https://warpcast.com/~/compose?text=Check%20out%20the%20similarity%20analysis%20between%20@${primaryUsername}%20and%20$@{secondaryUsername}.%20Discover%20shared%20NFTs,%20tokens,%20and%20followers%20and%20see%20the%20similarity%20score%20of%20${similarityScore.toFixed(2)}%25.%20View%20the%20analysis%20here:%20${window.location.href}`,
+            "_blank",
+          );
+        }}>
+          Share this analysis on Warpcast?
+        </button>
       </div>
     </main>
   );

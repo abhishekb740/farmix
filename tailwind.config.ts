@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import {nextui} from "@nextui-org/react";
+const plugin = require("tailwindcss/plugin");
 
 const config: Config = {
   content: [
@@ -17,6 +18,26 @@ const config: Config = {
       },
     },
   },
-  plugins: [nextui()],
+  plugins: [
+    plugin(({ addBase, theme }: { addBase: any; theme: any }) => {
+      addBase({
+        ".scrollbar": {
+          overflowY: "auto",
+          scrollbarColor: `${theme("colors.indigo.600")} ${theme("colors.indigo.50")}`,
+          scrollbarWidth: "thin",
+        },
+        ".scrollbar::-webkit-scrollbar": {
+          height: "1px",
+          width: "1px",
+        },
+        ".scrollbar::-webkit-scrollbar-thumb": {
+          backgroundColor: theme("colors.indigo.600"),
+        },
+        ".scrollbar::-webkit-scrollbar-track-piece": {
+          backgroundColor: theme("colors.indigo.50"),
+        },
+      });
+    }),
+  ],
 };
 export default config;

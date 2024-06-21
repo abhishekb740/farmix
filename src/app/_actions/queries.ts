@@ -200,7 +200,7 @@ const calculateObjectArraySimilarity = (array1: any[], array2: any[], key: strin
 export const calculateSimilarity = async (primaryUsername: string, secondaryUsername: string): Promise<any> => {
   const primaryAddress = await getUserAddressFromFCUsername(primaryUsername);
   const secondaryAddress = await getUserAddressFromFCUsername(secondaryUsername);
-
+  console.log(primaryAddress, secondaryAddress);
   if (!primaryAddress || !secondaryAddress) {
     console.error('One or both usernames did not resolve to addresses.');
     return 0;

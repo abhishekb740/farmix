@@ -10,32 +10,49 @@ import { useRouter } from "next/navigation";
 export default function Hero() {
   const [username, setUsername] = useState("");
   const { ready, authenticated, user } = usePrivy();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const disableSearching = !ready || (ready && authenticated);
 
   const getFCUserData = async () => {
-    const secondaryUsername = username;
-    if (user && user.farcaster && user.farcaster.username) {
-      const primaryUsername = user.farcaster.username;
-      const resp = await calculateSimilarity(primaryUsername, secondaryUsername);
-      console.log("Similarity data:", resp);
+    if (!username.trim()) {
+      alert("Please enter a valid username.");
+      return;
+    }
 
-      router.push(
-        `/results?similarityScore=${resp.similarityScore}&commonNFTs=${encodeURIComponent(
-          JSON.stringify(resp.commonNFTs)
-        )}&commonTokens=${encodeURIComponent(
-          JSON.stringify(resp.commonTokens)
-        )}&commonFollowers=${encodeURIComponent(
-          JSON.stringify(resp.commonFollowers)
-        )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
-      );
+    const secondaryUsername = username.trim();
+    if (user && user.farcaster && user.farcaster.username) {
+      setLoading(true);
+      try {
+        const primaryUsername = user.farcaster.username;
+        const resp = await calculateSimilarity(primaryUsername, secondaryUsername);
+        console.log("Similarity data:", resp);
+        router.push(
+          `/results?similarityScore=${resp.similarityScore}&commonNFTs=${encodeURIComponent(
+            JSON.stringify(resp.commonNFTs)
+          )}&commonTokens=${encodeURIComponent(
+            JSON.stringify(resp.commonTokens)
+          )}&commonFollowers=${encodeURIComponent(
+            JSON.stringify(resp.commonFollowers)
+          )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
+        );
+      } catch (error) {
+        console.error("Error fetching similarity data:", error);
+      } finally {
+        setLoading(false);
+      }
     } else {
-      console.error("User or user.farcaster is undefined");
+      alert("You must be logged in to perform this action.");
     }
   };
 
   return (
     <main className="flex flex-col justify-center items-center pt-20">
+      {loading && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      )}
       <div className="text-4xl">Welcome to Farmix</div>
       <div className="w-full flex flex-row justify-center items-center mt-20">
         <div className="flex flex-row w-1/2 rounded-3xl py-1 px-5 items-center justify-center bg-white border shadow-[0_0_20px_#3fc9f3]">
@@ -49,7 +66,7 @@ export default function Hero() {
             <Button
               isIconOnly
               variant="faded"
-              aria-label="Take a photo"
+              aria-label="Search username"
               onPress={getFCUserData}
               isDisabled={!disableSearching}
             >
