@@ -207,21 +207,32 @@ export const calculateSimilarity = async (primaryUsername: string, secondaryUser
   }
 
   const client = new CovalentClient(`${process.env.COVALENT_API_KEY}`);
-
+  console.log(client)
   const primaryNftData = await getAllNFTsForAddress(primaryAddress, client);
   const secondaryNftData = await getAllNFTsForAddress(secondaryAddress, client);
+
+  console.log(primaryNftData, secondaryNftData);
 
   const primaryTokenData = await getAllTokensForAddress(primaryAddress, client);
   const secondaryTokenData = await getAllTokensForAddress(secondaryAddress, client);
 
+  console.log(primaryTokenData, secondaryTokenData);
+  
   const primaryFollowingData = await getFollowingsProfileDetails(primaryAddress);
   const secondaryFollowingData = await getFollowingsProfileDetails(secondaryAddress);
 
+  console.log(primaryFollowingData, secondaryFollowingData);
+  
   const primaryNfts = primaryNftData.length ? primaryNftData.map(item => item.nft_data?.[0]?.external_data?.image).filter(image => image) : [];
   const secondaryNfts = secondaryNftData.length ? secondaryNftData.map(item => item.nft_data?.[0]?.external_data?.image).filter(image => image) : [];
 
+  console.log(primaryNfts, secondaryNfts);
+  
+
   const primaryTokens = primaryTokenData.length ? primaryTokenData.map(item => item.contract_ticker_symbol) : [];
   const secondaryTokens = secondaryTokenData.length ? secondaryTokenData.map(item => item.contract_ticker_symbol) : [];
+
+  console.log(primaryTokens, secondaryTokens);
 
   const nftSimilarityResult = calculateArraySimilarity(primaryNfts, secondaryNfts);
   const tokenSimilarityResult = calculateArraySimilarity(primaryTokens, secondaryTokens);
