@@ -20,7 +20,7 @@ export default function Hero() {
     if (user && user.farcaster && user.farcaster.username) { 
       setLoading(true);
       const primaryUsername = user.farcaster.username; 
-      const resp = await fetch("http://farmix-apiserver-env.eba-3g3jxf3i.ap-south-1.elasticbeanstalk.com/calculateSimilarity", { 
+      const resp = await fetch("https://farmix-apiserver-env.eba-3g3jxf3i.ap-south-1.elasticbeanstalk.com/calculateSimilarity", { 
         method: "POST", 
         body: JSON.stringify({ 
           primaryUsername: primaryUsername, 
