@@ -19,12 +19,12 @@ const Notification: React.FC<NotificationProps> = ({ message, show, onClose }) =
   }, [show, onClose]);
 
   return (
-    show && (
-      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow-lg">
-        {message}
-      </div>
-    )
-  );
+      show ? (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow-lg">
+          {message}
+        </div>
+      ) : null
+    );
 };
 
 export default Notification;
