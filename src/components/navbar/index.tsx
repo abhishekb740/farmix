@@ -2,16 +2,18 @@
 
 import { Button } from "@nextui-org/react";
 import { usePrivy } from "@privy-io/react-auth";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
     const { user, login, logout, ready, authenticated } = usePrivy();
     const disableLogin = !ready || (ready && authenticated);
+    const router = useRouter();
 
     return (
         <div className='flex flex-row h-[5rem] items-center justify-between px-16 border-b-[1px] border-b-[#3fc9f3]'>
             <div className='flex flex-row gap-2'>
                 {/* <Image src='/TrustifyLogo.png' width={20} height={20} alt="Trustify Logo" /> */}
-                <div className='text-2xl font-poppins'>Farmix</div>
+                <div onClick={()=>router.push("/")} className='text-2xl font-poppins hover:cursor-pointer'>Farmix</div>
             </div>
             <div className='flex flex-row gap-4'>
                 {/* <button className='border shadow-[0_0_5px_#3fc9f3] rounded-md py-1 px-3'>BSC</button> */}
