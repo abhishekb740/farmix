@@ -2,6 +2,8 @@
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { Navbar } from "@/components";
+import { NextUIProvider } from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
@@ -20,9 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} ${roboto.className}`}>
-        <Providers>
-          {children}
-        </Providers>
+        <NextUIProvider>
+          <Providers>
+            <Navbar />
+            {children}
+          </Providers>
+        </NextUIProvider>
       </body>
     </html>
   );

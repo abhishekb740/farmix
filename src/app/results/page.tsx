@@ -43,17 +43,17 @@ function ResultsComponent() {
 
   return (
     <main className="flex flex-col items-center min-h-screen p-4 gap-4 bg-black text-white font-sans">
-      <button
-        onClick={() => router.push('/')}
-        className="absolute top-5 left-8 bg-[#3fc9f3] text-black px-4 py-2 rounded hover:bg-[#35b0d6] transition-colors shadow-lg"
-      >
-        <div className='font-bold'>
-          Home
-        </div>
-      </button>
       <h1 className="text-3xl mb-6 font-extrabold text-center">
         Similarity Analysis: {primaryUsername} 🔍 {secondaryUsername}
       </h1>
+      <button className="absolute top-24 right-8 text-xl text-[purple] px-4 py-1 rounded" onClick={() => {
+          window.open(
+            `https://warpcast.com/~/compose?text=Check%20out%20the%20similarity%20analysis%20between%20@${primaryUsername}%20and%20$@{secondaryUsername}.%20Discover%20shared%20NFTs,%20tokens,%20and%20followers%20and%20see%20the%20similarity%20score%20of%20${similarityScore.toFixed(2)}%25.%20View%20the%20analysis%20here:%20${window.location.href}`,
+            "_blank",
+          );
+        }}>
+          Share on Warpcast?
+        </button>
       <div className="text-2xl mb-8 font-semibold">Similarity Score: {similarityScore.toFixed(2)}%</div>
       <div className="w-full flex flex-col md:flex-row justify-around space-x-0 md:space-x-6 border border-gray-700 rounded-md p-4 bg-gray-900 bg-opacity-50 shadow-lg">
         <div className="w-full md:w-1/3 mb-4 md:mb-0">
@@ -117,16 +117,6 @@ function ResultsComponent() {
             )}
           </div>
         </div>
-      </div>
-      <div className="flex flex-row items-center justify-center mt-4 gap-4">
-        <button className="text-xl bg-[#3fc9f3] text-black px-4 py-1 rounded hover:bg-[#35b0d6] transition-colors shadow-lg" onClick={() => {
-          window.open(
-            `https://warpcast.com/~/compose?text=Check%20out%20the%20similarity%20analysis%20between%20@${primaryUsername}%20and%20$@{secondaryUsername}.%20Discover%20shared%20NFTs,%20tokens,%20and%20followers%20and%20see%20the%20similarity%20score%20of%20${similarityScore.toFixed(2)}%25.%20View%20the%20analysis%20here:%20${window.location.href}`,
-            "_blank",
-          );
-        }}>
-          Share this analysis on Warpcast?
-        </button>
       </div>
     </main>
   );

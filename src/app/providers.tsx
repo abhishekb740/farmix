@@ -1,11 +1,9 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
-import { NextUIProvider } from "@nextui-org/react";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <NextUIProvider>
       <PrivyProvider
         appId={`${process.env.NEXT_PUBLIC_PRIVY_APP_ID}`}
         config={{
@@ -20,6 +18,5 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       >
         {children}
       </PrivyProvider>
-    </NextUIProvider>
   );
 }

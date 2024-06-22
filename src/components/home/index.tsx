@@ -1,23 +1,23 @@
 "use client";
 
-import { calculateSimilarity } from "@/app/_actions/queries";
 import { IoIosSearch } from "react-icons/io";
 import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { Button, Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { json } from "stream/consumers";
+import {Notification} from "@/components";
 
 export default function Hero() {
   const [username, setUsername] = useState("");
   const { ready, authenticated, user } = usePrivy();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [showNotification, setShowNotification] = useState(false);
   const disableSearching = !ready || (ready && authenticated);
 
   const getFCUserData = async () => {
-    if(!username) {
-      
+    if (!username) {
+      setShowNotification(true);
       return;
     }
     const secondaryUsername = username;
@@ -65,8 +65,13 @@ export default function Hero() {
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
+      <Notification
+        message="Please enter a username to search."
+        show={showNotification}
+        onClose={() => setShowNotification(false)}
+      />
       <div className="text-5xl font-bold mb-4 text-white font-poppins">Farmix</div>
-      <div className="text-xl text-gray-400 mb-8 text-center max-w-lg font-roboto">
+      <div className="text-xl text-gray-200 mb-8 text-center max-w-lg font-roboto">
         Discover your compatibility with others based on shared passions and mutual connections
       </div>
       <div className="w-full flex flex-row justify-center items-center mt-8">
