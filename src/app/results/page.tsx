@@ -46,14 +46,6 @@ function ResultsComponent() {
       <h1 className="text-3xl mb-6 font-extrabold text-center">
         Similarity Analysis: {primaryUsername} 🔍 {secondaryUsername}
       </h1>
-      <button className="absolute top-24 right-8 text-xl text-[purple] px-4 py-1 rounded" onClick={() => {
-          window.open(
-            `https://warpcast.com/~/compose?text=Check%20out%20the%20similarity%20analysis%20between%20@${primaryUsername}%20and%20$@{secondaryUsername}.%20Discover%20shared%20NFTs,%20tokens,%20and%20followers%20and%20see%20the%20similarity%20score%20of%20${similarityScore.toFixed(2)}%25.%20View%20the%20analysis%20here:%20${window.location.href}`,
-            "_blank",
-          );
-        }}>
-          Share on Warpcast?
-        </button>
       <div className="text-2xl mb-8 font-semibold">Similarity Score: {similarityScore.toFixed(2)}%</div>
       <div className="w-full flex flex-col md:flex-row justify-around space-x-0 md:space-x-6 border border-gray-700 rounded-md p-4 bg-gray-900 bg-opacity-50 shadow-lg">
         <div className="w-full md:w-1/3 mb-4 md:mb-0">
@@ -91,7 +83,7 @@ function ResultsComponent() {
           </div>
         </div>
         <div className="w-full md:w-1/3">
-          <h2 className="text-2xl mb-4 font-bold text-center border-b border-gray-700 pb-2">Shared Followers</h2>
+          <h2 className="text-2xl mb-4 font-bold text-center border-b border-gray-700 pb-2">Shared Followings</h2>
           <div className="h-[21rem] scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
             {commonFollowers.length > 0 ? (
               commonFollowers.map((following: Following, index) => (
@@ -118,6 +110,14 @@ function ResultsComponent() {
           </div>
         </div>
       </div>
+      <button className="lg:absolute lg:top-24 lg:right-8 text-xl text-[purple] px-4 py-1 rounded" onClick={() => {
+        window.open(
+          `https://warpcast.com/~/compose?text=Check%20out%20the%20similarity%20analysis%20between%20@${primaryUsername}%20and%20$@{secondaryUsername}.%20Discover%20shared%20NFTs,%20tokens,%20and%20followers%20and%20see%20the%20similarity%20score%20of%20${similarityScore.toFixed(2)}%25.%20View%20the%20analysis%20here:%20${window.location.href}`,
+          "_blank",
+        );
+      }}>
+        Share on Warpcast?
+      </button>
     </main>
   );
 }
