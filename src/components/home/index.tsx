@@ -5,7 +5,7 @@ import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { Button, Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import {Notification} from "@/components";
+import { Notification } from "@/components";
 
 export default function Hero() {
   const [username, setUsername] = useState("");
@@ -15,7 +15,7 @@ export default function Hero() {
   const [showNotification, setShowNotification] = useState(false);
   const disableSearching = !ready || (ready && authenticated);
 
-  const getFCUserData = async () => {
+  const getFCUserData = async (): Promise<void> => {
     if (!username) {
       setShowNotification(true);
       return;
@@ -54,14 +54,18 @@ export default function Hero() {
         )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
       );
     } else {
-      alert("You must be logged in to perform this action.");
+      <Notification
+        message="You must be logged in to perform this action."
+        show={true}
+        onClose={() => setShowNotification(false)}
+      />
     }
   };
 
   return (
-    <main className="flex flex-col justify-center items-center pt-20">
+    <main className="flex flex-col justify-center items-center min-h-screen w-full">
       {loading && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex justify-center items-cente bg-opacity-50 z-50">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
@@ -70,15 +74,11 @@ export default function Hero() {
         show={showNotification}
         onClose={() => setShowNotification(false)}
       />
-      <div className="text-5xl font-bold mb-4 text-white font-poppins">Farmix</div>
-      <div className="text-xl text-gray-200 mb-8 text-center max-w-lg font-roboto">
-        Discover your compatibility with others based on shared passions and mutual connections
-      </div>
-      <div className="w-full flex flex-row justify-center items-center mt-8">
-        <div className="flex flex-row w-1/2 rounded-3xl py-1 px-5 items-center justify-center bg-white border shadow-[0_0_20px_#3fc9f3]">
+      <div className="w-full flex flex-row justify-center items-center">
+        <div className="flex flex-row w-1/2 rounded-3xl py-1 px-5 items-center justify-center bg-white border shadow-[0_0_30px_#A675D8]">
           <input
             className="flex ml-4 w-full py-1.5 bg-transparent focus:outline-none text-black"
-            placeholder="Search farcaster username"
+            placeholder="Enter a Farcaster Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -93,7 +93,6 @@ export default function Hero() {
               variant="faded"
               aria-label="Search username"
               onPress={getFCUserData}
-              isDisabled={!disableSearching}
             >
               <IoIosSearch size={25} className="text-neutral-400" />
             </Button>

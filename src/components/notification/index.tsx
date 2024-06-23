@@ -7,7 +7,7 @@ type NotificationProps = {
   onClose: () => void; // onClose should be a function that takes no arguments and returns void
 };
 
-const Notification: React.FC<NotificationProps> = ({ message, show, onClose }) => {
+export default function Notification ({ message, show, onClose }: NotificationProps) {
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
@@ -26,5 +26,3 @@ const Notification: React.FC<NotificationProps> = ({ message, show, onClose }) =
       ) : null
     );
 };
-
-export default Notification;
