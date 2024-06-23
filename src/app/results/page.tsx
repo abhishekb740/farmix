@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { usePrivy } from "@privy-io/react-auth";
 
 interface Following {
   username: string;
@@ -13,6 +14,7 @@ interface Following {
 
 function ResultsComponent() {
   const router = useRouter();
+  const { user, login, logout, ready, authenticated } = usePrivy();
   const searchParams = useSearchParams();
   const [similarityScore, setSimilarityScore] = useState(0);
   const [commonNFTs, setCommonNFTs] = useState([]);
@@ -20,6 +22,7 @@ function ResultsComponent() {
   const [commonFollowers, setCommonFollowers] = useState([]);
   const [primaryUsername, setPrimaryUsername] = useState("");
   const [secondaryUsername, setSecondaryUsername] = useState("");
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   useEffect(() => {
     const similarityScore = searchParams.get("similarityScore");
@@ -39,10 +42,53 @@ function ResultsComponent() {
     }
   }, [searchParams]);
 
+  const toggleDropdown = () => {
+    setShowDropdown((prevShowDropdown) => !prevShowDropdown);
+  };
+
+  const handlelogout = () => {
+    setShowDropdown(false);
+    logout();
+  }
+
   const dummyImage = 'https://via.placeholder.com/32';
 
   return (
     <main className="flex flex-col items-center min-h-screen p-4 gap-4 bg-black text-white font-sans">
+      <div className="w-full">
+        <div className="h-[1px] w-full bg-white border-white"></div>
+        <div className="flex flex-row items-center justify-between py-6" style={{ fontFamily: "Satoshi" }}>
+          <div className="text-md" style={{ letterSpacing: '8px' }}>ABOUT</div>
+          <div className="text-6xl" style={{ fontFamily: 'Ares Broken VF Regular' }}>Farmix</div>
+          <div className="relative text-2xl">
+            <button
+              onClick={authenticated ? toggleDropdown : login}
+              className=' gap-2 rounded-md py-1 px-3 flex flex-row justify-center items-center hover:cursor-pointer'
+            >
+              {authenticated && (
+                <div>
+                  <img src={user?.farcaster?.pfp || ''} alt="Profile Picture" className='w-8 h-8 rounded-full' />
+                </div>
+              )}
+              {authenticated ? `${user?.farcaster?.username || ''}` : `Login`}
+            </button>
+            {showDropdown && (
+              <div className="absolute right-0 mt-1 w-40 bg-white rounded-md shadow-lg z-10">
+                <button
+                  onClick={handlelogout}
+                  className="flex flex-row items-center justify-start gap-4 w-full text-left px-4 py-1 rounded-md bg-white text-black hover:bg-gray-200"
+                >
+                  <img src="/logout.png" height={20} width={20} alt="logout logo" />
+                  <div className="text-lg">
+                    Logout
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="h-[1px] w-full bg-white border-white"></div>
+      </div>
       <h1 className="text-3xl mb-6 font-extrabold text-center">
         Similarity Analysis: {primaryUsername} 🔍 {secondaryUsername}
       </h1>
@@ -110,14 +156,6 @@ function ResultsComponent() {
           </div>
         </div>
       </div>
-      <button className="lg:absolute lg:top-24 lg:right-8 text-xl text-[purple] px-4 py-1 rounded" onClick={() => {
-        window.open(
-          `https://warpcast.com/~/compose?text=Check%20out%20the%20similarity%20analysis%20between%20@${primaryUsername}%20and%20$@{secondaryUsername}.%20Discover%20shared%20NFTs,%20tokens,%20and%20followers%20and%20see%20the%20similarity%20score%20of%20${similarityScore.toFixed(2)}%25.%20View%20the%20analysis%20here:%20${window.location.href}`,
-          "_blank",
-        );
-      }}>
-        Share on Warpcast?
-      </button>
     </main>
   );
 }
