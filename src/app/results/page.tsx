@@ -92,7 +92,7 @@ function ResultsComponent() {
       <div className="flex flex-col md:flex-row w-full h-full pt-4 gap-2">
         <div className="w-full md:w-1/3 mb-4 md:mb-0 flex flex-col rounded-md border border-white p-2">
           <h2 className="text-2xl mb-4 font-bold text-center pb-2">Shared Followings</h2>
-          <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
+          <div className="overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
             {commonFollowers.length > 0 ? (
               commonFollowers.map((following: Following, index) => (
                 <a
