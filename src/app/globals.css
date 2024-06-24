@@ -12,16 +12,15 @@ body {
 }
 
 @font-face {
-  font-family: "Ares Broken VF Regular";
-  src: url("../fonts//Ares\ Broken\ VF\ Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style:  normal;
-}
-
-@font-face {
-  font-family: "Satoshi";
-  src: url("../fonts/Satoshi_Complete/Fonts/OTF/Satoshi-Regular.otf") format("opentype");
+  font-family: 'Ares';
+  src: url('/fonts/Ares.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi_Complete/Fonts/OTF/Satoshi-Regular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
