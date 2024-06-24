@@ -59,7 +59,7 @@ function ResultsComponent() {
         <div className="h-[1px] w-full bg-white border-white"></div>
         <div className="flex flex-row items-center justify-between py-2" style={{ fontFamily: "Satoshi" }}>
           <div className="text-md" style={{ letterSpacing: '8px' }}>ABOUT</div>
-          <div className="text-6xl" style={{ fontFamily: 'Ares Broken VF Regular' }}>Farmix</div>
+          <div className="text-6xl hover:cursor-pointer" style={{ fontFamily: 'Ares Broken VF Regular' }} onClick={() => router.push("/")}>Farmix</div>
           <div className="relative text-2xl">
             <button
               onClick={authenticated ? toggleDropdown : login}
