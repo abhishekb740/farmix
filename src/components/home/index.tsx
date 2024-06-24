@@ -67,7 +67,7 @@ export default function Hero() {
   return (
     <main className="flex flex-col justify-center items-center min-h-screen w-full">
       {loading && (
-        <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex justify-center items-center mt-32 bg-opacity-50 z-50">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
@@ -76,29 +76,33 @@ export default function Hero() {
         show={showNotification}
         onClose={() => setShowNotification(false)}
       />
-      <div className="w-full flex flex-row justify-center items-center mb-36">
-        <div className="flex flex-row w-1/2 rounded-3xl py-1 px-5 items-center justify-center bg-white border shadow-[0_0_30px_#A675D8]">
-          <input
-            className="flex ml-4 w-full py-1.5 bg-transparent focus:outline-none text-black"
-            placeholder="Enter a Farcaster Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <Tooltip
-            content="Login first"
-            isDisabled={disableSearching}
-            offset={15}
-            color="secondary"
-          >
-            <Button
-              isIconOnly
-              variant="faded"
-              aria-label="Search username"
-              onPress={getFCUserData}
+      <div className="w-full flex flex-col justify-center items-center gap-12">
+        <div className="text-7xl">
+          Enter a <i className="font-thin">Farcaster</i> Username
+        </div>
+        <div className="w-full flex flex-row justify-center items-center mb-36">
+          <div className="flex flex-row w-1/2 rounded-full py-1 px-5 items-center justify-center bg-white border shadow-[0_0_30px_#A675D8]">
+            <input
+              className="flex ml-4 w-full py-3 bg-transparent focus:outline-none text-black"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Tooltip
+              content="Login first"
+              isDisabled={disableSearching}
+              offset={15}
+              color="secondary"
             >
-              <IoIosSearch size={25} className="text-neutral-400" />
-            </Button>
-          </Tooltip>
+              <Button
+                isIconOnly
+                variant="faded"
+                aria-label="Search username"
+                onPress={getFCUserData}
+              >
+                <IoIosSearch size={25} className="text-neutral-400" />
+              </Button>
+            </Tooltip>
+          </div>
         </div>
       </div>
     </main>
