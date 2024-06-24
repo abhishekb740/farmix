@@ -48,13 +48,13 @@ export default function Hero2() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, rotateX: 90 }}
             className="flex flex-col items-center min-h-screen pt-2 px-8"
-            style={{ background: "linear-gradient(to top left, rgb(26, 26, 44), rgb(73, 48, 99))" }}
+            style={{ background: "linear-gradient(to top left, rgb(34, 34, 56), rgb(157, 0, 254))" }}
           >
             <div className="w-full">
               <div className="h-[1px] w-full bg-white border-white"></div>
               <div className="flex flex-row items-center justify-between py-6" style={{ fontFamily: "Satoshi" }}>
-                <div className="text-md" style={{letterSpacing: '8px'}}>ABOUT</div>
-                <div className="text-6xl" style={{ fontFamily: 'Ares Broken VF Regular' }}>Farmix</div>
+                <div className="text-md" style={{ letterSpacing: '8px' }}>ABOUT</div>
+                <div className="text-6xl" style={{ fontFamily: 'Ares' }}>Farmix</div>
                 <div className="relative text-2xl">
                   <button
                     onClick={authenticated ? toggleDropdown : login}
@@ -84,22 +84,24 @@ export default function Hero2() {
               </div>
               <div className="h-[1px] w-full bg-white border-white"></div>
             </div>
-            <div className="flex flex-row items-end mt-12 w-full justify-between">
-              <div className="flex flex-col gap-8">
-                <div className="w-[70%] text-4xl" style={{fontFamily: "Carme"}}>
-                  Gauge Compatibility and Foster Connections
+            <div className="flex flex-row items-end w-full justify-between">
+              <div className="flex flex-col">
+                <div className="flex flex-col w-[72%] gap-4">
+                  <div className="py-2 text-[2rem] border border-white rounded-full flex justify-center" style={{ fontFamily: "Satoshi" }}>
+                    Gauge Compatibility and Foster Connections
+                  </div>
+                  <div className="text-xl" style={{ fontFamily: "Satoshi" }}>
+                    Farmix analyzes shared interests and mutual connections to generate personalized compatibility scores, fostering connections.
+                  </div>
                 </div>
-                <div className="text-2xl" style={{ fontFamily: "Carme" }}>
-                  Farmix analyzes shared interests and mutual connections to generate personalized compatibility scores, fostering connections.
-                </div>
-                <div className="text-[10rem]" style={{ fontFamily: 'Ares Broken VF Regular' }}>FARMIX</div>
+                <div className="text-[10rem]" style={{ fontFamily: 'Ares' }}>FARMIX</div>
               </div>
               <div className="flex justify-center items-center">
                 <img src="/farmix-cube.png" height={620} width={620} />
               </div>
             </div>
             <div
-              className="bg-white text-black rounded-full py-2 px-6 flex flex-row justify-center cursor-pointer"
+              className="text-white border border-white rounded-full py-2 px-6 flex flex-row justify-center items-center cursor-pointer"
               onClick={handleScrollDown}
             >
               SCROLL DOWN
@@ -114,7 +116,7 @@ export default function Hero2() {
             className="flex flex-col items-center min-h-screen w-full"
           >
             <div className="min-h-screen w-full bg-[url('/Home2.png')] bg-cover bg-no-repeat bg-center">
-              <Hero/>
+              <Hero />
             </div>
           </motion.div>
         )}
