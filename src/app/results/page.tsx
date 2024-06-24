@@ -119,6 +119,9 @@ function ResultsComponent() {
         </div>
         <div className="w-full md:w-2/3 flex flex-col gap-2 h-full">
           <div className='flex flex-col items-center justify-center gap-4 border border-white rounded-md min-h-[15rem]'>
+            <div className='flex text-3xl'>
+              {`${primaryUsername} 🔎 ${secondaryUsername}`}
+            </div>
             <div className="text-2xl font-semibold text-center">
               Similarity Score: {similarityScore.toFixed(2)}%
             </div>
