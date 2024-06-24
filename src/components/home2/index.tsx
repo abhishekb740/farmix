@@ -48,7 +48,7 @@ export default function Hero2() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, rotateX: 90 }}
             className="flex flex-col items-center min-h-screen pt-2 px-8"
-            style={{ background: "linear-gradient(to top left, rgb(26, 26, 44), rgb(63, 38, 89))" }}
+            style={{ background: "linear-gradient(to top left, rgb(26, 26, 44), rgb(73, 48, 99))" }}
           >
             <div className="w-full">
               <div className="h-[1px] w-full bg-white border-white"></div>
@@ -89,13 +89,13 @@ export default function Hero2() {
                 <div className="w-[70%] text-4xl" style={{fontFamily: "Carme"}}>
                   Gauge Compatibility and Foster Connections
                 </div>
-                <div className="text-2xl" style={{ fontFamily: "Satoshi" }}>
+                <div className="text-2xl" style={{ fontFamily: "Carme" }}>
                   Farmix analyzes shared interests and mutual connections to generate personalized compatibility scores, fostering connections.
                 </div>
                 <div className="text-[10rem]" style={{ fontFamily: 'Ares Broken VF Regular' }}>FARMIX</div>
               </div>
               <div className="flex justify-center items-center">
-                <img src="/farmix-cube.png" height={550} width={550} />
+                <img src="/farmix-cube.png" height={620} width={620} />
               </div>
             </div>
             <div
