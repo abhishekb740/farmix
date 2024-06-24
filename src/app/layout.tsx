@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import { Navbar } from "@/components";
+import { SimilarityProvider } from '@/contexts/similarityContext';
 import { NextUIProvider } from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,9 +26,11 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.className} ${roboto.className}`}>
         <NextUIProvider>
-          <Providers>
-            {children}
-          </Providers>
+          <SimilarityProvider>
+            <Providers>
+              {children}
+            </Providers>
+          </SimilarityProvider>
         </NextUIProvider>
       </body>
     </html>

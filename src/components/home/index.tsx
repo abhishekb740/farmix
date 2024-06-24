@@ -6,10 +6,12 @@ import { usePrivy } from "@privy-io/react-auth";
 import { Button, Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Notification } from "@/components";
+import { useSimilarity } from "@/contexts/similarityContext";
 
 export default function Hero() {
   const [username, setUsername] = useState("");
   const { ready, authenticated, user } = usePrivy();
+  const { setSimilarityData } = useSimilarity();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [showNotification, setShowNotification] = useState(false);
@@ -43,16 +45,16 @@ export default function Hero() {
       const data = await resp.json();
       console.log(data);
       setLoading(false);
-      router.push(
-        `/results?similarityScore=${data.similarityScore
-        }&commonNFTs=${encodeURIComponent(
-          JSON.stringify(data.commonNFTs)
-        )}&commonTokens=${encodeURIComponent(
-          JSON.stringify(data.commonTokens)
-        )}&commonFollowers=${encodeURIComponent(
-          JSON.stringify(data.commonFollowers)
-        )}&primaryUsername=${primaryUsername}&secondaryUsername=${secondaryUsername}`
-      );
+      setSimilarityData({
+        similarityScore: data.similarityScore,
+        commonNFTs: data.commonNFTs,
+        commonTokens: data.commonTokens,
+        commonFollowers: data.commonFollowers,
+        primaryUsername,
+        secondaryUsername
+      });
+
+      router.push("/results");
     } else {
       <Notification
         message="You must be logged in to perform this action."
