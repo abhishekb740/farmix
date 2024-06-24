@@ -7,7 +7,7 @@ export default function Home() {
   useEffect(() => {
     const userAgent = typeof window.navigator === 'undefined' ? '' : navigator.userAgent;
     console.log(userAgent)
-    const mobile = /Mobi|Android/i.test(userAgent);
+    const mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent);
     console.log(mobile);
     
     setIsMobile(mobile);
