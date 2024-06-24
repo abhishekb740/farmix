@@ -113,7 +113,7 @@ export default function Hero2() {
             exit={{ opacity: 0, rotateX: 90 }}
             className="flex flex-col items-center min-h-screen w-full"
           >
-            <div className="min-h-screen w-full bg-[url('/Home2.png')] object-cover bg-no-repeat">
+            <div className="min-h-screen w-full bg-[url('/Home2.png')] bg-cover bg-no-repeat bg-center">
               <Hero/>
             </div>
           </motion.div>
