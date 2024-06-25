@@ -28,16 +28,16 @@ function ResultsComponent() {
   }
 
   return (
-    <main className="flex flex-col items-center max-h-screen p-2 gap-2 bg-black text-white font-sans">
+    <main className="flex flex-col items-center min-h-screen p-2 gap-2 bg-black text-white font-sans">
       <div className="w-full">
         <div className="h-[1px] w-full bg-white border-white"></div>
         <div className="flex flex-row items-center justify-between py-2" style={{ fontFamily: "Satoshi" }}>
-          <div className="text-md" style={{ letterSpacing: '8px' }}>ABOUT</div>
-          <div className="text-6xl hover:cursor-pointer" style={{ fontFamily: 'Ares Broken VF Regular' }} onClick={() => router.push("/")}>Farmix</div>
-          <div className="relative text-2xl">
+          <div className="text-4xl hover:cursor-pointer pl-8" style={{ fontFamily: 'Ares Broken VF Regular' }} onClick={() => router.push("/")}>Farmix</div>
+          <div className="text-md" style={{ letterSpacing: '4px' }}>DASHBOARD</div>
+          <div className="relative text-xl">
             <button
               onClick={authenticated ? toggleDropdown : login}
-              className=' gap-2 rounded-md py-1 px-3 flex flex-row justify-center items-center hover:cursor-pointer'
+              className='gap-2 rounded-md py-1 px-3 flex flex-row justify-center items-center hover:cursor-pointer'
             >
               {authenticated && (
                 <div>
@@ -63,10 +63,9 @@ function ResultsComponent() {
         </div>
         <div className="h-[1px] w-full bg-white border-white"></div>
       </div>
-      <div className="flex flex-col md:flex-row w-full h-full pt-4 gap-2">
-        <div className="w-full md:w-1/3 mb-4 md:mb-0 flex flex-col rounded-md border border-white p-2">
-          <h2 className="text-2xl mb-4 font-bold text-center pb-2">Shared Followings</h2>
-          <div className="overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg">
+      <div className="flex flex-col md:flex-row w-full h-full pt-2 gap-4">
+        <div className="w-full justify-between md:w-1/3 mb-4 md:mb-0 flex flex-col rounded-3xl border border-white p-2">
+          <div className="overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg gap-2">
             {similarityData?.commonFollowers?.length ?? 0 > 0 ? (
               similarityData?.commonFollowers.map((following: Following, index) => (
                 <a
@@ -74,7 +73,7 @@ function ResultsComponent() {
                   href={`https://warpcast.com/${following.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mb-2 flex items-center space-x-2 border border-neutral-300 rounded-md p-4 hover:bg-gray-700 transition-colors shadow-md"
+                  className="mb-2 flex items-center justify-between space-x-2 bg-[#C3C1C1] rounded-full p-4 hover:bg-gray-700 transition-colors"
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                   <img
@@ -83,56 +82,68 @@ function ResultsComponent() {
                     alt={following?.profileDisplayName}
                     className="w-8 h-8 rounded-full shadow-md"
                   />
-                  <div className="text-lg font-medium">{following.profileDisplayName}</div>
+                  <div className="text-lg text-black font-normal">{following.profileDisplayName}</div>
                 </a>
               ))
             ) : (
               <p className="text-center">No Shared Followers Found</p>
             )}
           </div>
+          <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Followings</h2>
         </div>
-        <div className="w-full md:w-2/3 flex flex-col gap-2 h-full">
-          <div className='flex flex-col items-center justify-center gap-4 border border-white rounded-md min-h-[15rem]'>
-            <div className='flex text-3xl'>
-              {`${similarityData?.primaryUsername} 🔎 ${similarityData?.secondaryUsername}`}
+        <div className="w-full md:w-2/3 flex flex-col gap-2 h-full  ">
+          <div className="rounded-3xl flex flex-col items-center justify-around pb-4 border border-white min-h-[15rem] bg-[url('/result-image.png')] bg-no-repeat bg-cover bg-center">
+            <div className='flex flex-row text-3xl'>
+              You & {similarityData?.secondaryUsername}
             </div>
-            <div className="text-2xl font-semibold text-center">
-              Similarity Score: {similarityData?.similarityScore.toFixed(2)}%
+            <div className="flex flex-row text-7xl font-semibold text-center bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text items-end">
+              {similarityData?.similarityScore.toFixed(2)}
+              <div className='flex flex-col hover:cursor-pointer'>
+                <div className='flex flex-row gap-1 text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-3 py-2 items-center justify-center' onClick={() => {
+                  window.open(
+                    `https://warpcast.com/~/compose?text=%F0%9F%8C%90%20My%20Digital%20Twin%20on%20Warpcast!%20%F0%9F%9A%80%0A%0ADiscovered%20something%20amazing!%20By%20comparing%20our%20owned%20tokens%20and%20NFTs,%20I%20have%20a%20similarity%20score%20of%20${similarityData?.similarityScore.toFixed(2)}%25%20with%20@${similarityData?.secondaryUsername}%20%0A%0AWant%20to%20find%20your%20own%20digital%20twin%20and%20see%20how%20similar%20you%20are%20with%20other%20users?%20Join%20Farmix%20now%20and%20explore%20the%20exciting%20world%20of%20digital%20assets!%0A%0Ahttps%3A%2F%2Ffarmix-web3bytes.vercel.app`,
+                    "_blank",
+                  );
+                }}>
+                  <div>
+                    SHARE
+                  </div>
+                  <div>
+                    <img src='/share.png' alt='share logo' height={13} width={13} />
+                  </div>
+                </div>
+                <div className=''>
+                  %
+                </div>
+              </div>
+              <div className='ml-4 text-2xl text-white'>
+                Similar
+              </div>
             </div>
-            <button className="text-xl text-[purple] px-4 py-1 rounded w-1/2" onClick={() => {
-              window.open(
-                `https://warpcast.com/~/compose?text=%F0%9F%8C%90%20My%20Digital%20Twin%20on%20Warpcast!%20%F0%9F%9A%80%0A%0ADiscovered%20something%20amazing!%20By%20comparing%20our%20owned%20tokens%20and%20NFTs,%20I%20have%20a%20similarity%20score%20of%20${similarityData?.similarityScore.toFixed(2)}%25%20with%20@${similarityData?.secondaryUsername}%20%0A%0AWant%20to%20find%20your%20own%20digital%20twin%20and%20see%20how%20similar%20you%20are%20with%20other%20users?%20Join%20Farmix%20now%20and%20explore%20the%20exciting%20world%20of%20digital%20assets!%0A%0Ahttps%3A%2F%2Ffarmix-web3bytes.vercel.app`,
-                "_blank",
-              );
-            }}>
-              Share on Warpcast?
-            </button>
           </div>
-          <div className="flex flex-col md:flex-row w-full space-y-6 md:space-y-0 md:space-x-6">
-            <div className="w-full md:w-1/2 flex flex-col max-h-[calc(100vh-370px)] border border-white p-2 rounded-md">
-              <h2 className="text-2xl mb-4 font-bold text-center pb-2">Shared Tokens</h2>
+          <div className="flex flex-col md:flex-row w-full gap-4 mt-2">
+            <div className="w-full md:w-1/2 flex flex-col min-h-[calc(100vh-350px)] max-h-[calc(100vh-350px)] border border-white p-2 rounded-3xl justify-center">
               <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg flex-1">
                 {similarityData?.commonTokens.length ?? 0 > 0 ? (
                   similarityData?.commonTokens.map((token, index) => (
-                    <div key={index} className="mb-2 flex flex-row gap-2 items-center border p-4 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors shadow-md">
+                    <div key={index} className="mb-2 flex flex-row gap-2 items-center p-4 bg-[#C3C1C1] rounded-full hover:bg-gray-600 transition-colors shadow-md">
                       <div className="bg-gradient-to-b from-violet-500 to-blue-600 w-8 h-8 rounded-full shadow-lg"></div>
-                      <div className="text-lg font-medium">{token}</div>
+                      <div className="text-lg font-medium text-black">{token}</div>
                     </div>
                   ))
                 ) : (
                   <p className="text-center">No Common Tokens Found</p>
                 )}
               </div>
+              <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Tokens</h2>
             </div>
-            <div className="w-full md:w-1/2 flex flex-col max-h-[calc(100vh-370px)] border border-white p-2 rounded-md">
-              <h2 className="text-2xl mb-4 font-bold text-center pb-2">Shared NFTs</h2>
-              <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg flex-1">
+            <div className="w-full justify-between md:w-1/2 flex flex-col min-h-[calc(100vh-350px)] max-h-[calc(100vh-350px)] bg-[#C3C1C1] p-2 rounded-3xl">
+              <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg flex-1">
                 {similarityData?.commonNFTs?.length ?? 0 > 0 ? (
                   similarityData?.commonNFTs.map((nft, index) => (
-                    <div key={index} className="mb-4 p-2 border-b border-gray-600">
-                      <div className="text-center mb-2">NFT {index + 1}</div>
+                    <div key={index} className="mb-4 p-2">
                       {nft ? (
-                        <img src={nft} alt={`NFT ${index + 1}`} className="w-full h-24 object-contain mb-2 rounded-md shadow-md" />
+                        <img src={nft} alt={`NFT ${index + 1}`} className="w-full bg-cover mb-2 rounded-md shadow-md" />
                       ) : (
                         <div className="text-center">Image not available</div>
                       )}
@@ -142,6 +153,7 @@ function ResultsComponent() {
                   <p className="text-center">No Shared NFTs Found</p>
                 )}
               </div>
+              <h2 className="text-3xl font-bold text-center pb-1 text-black"> <span className='font-normal'> Shared </span> NFTs</h2>
             </div>
           </div>
         </div>
