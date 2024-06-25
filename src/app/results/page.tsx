@@ -65,7 +65,7 @@ function ResultsComponent() {
       </div>
       <div className="flex flex-col md:flex-row w-full h-full pt-2 gap-4">
         <div className="w-full justify-between md:w-1/3 mb-4 md:mb-0 flex flex-col rounded-3xl border border-white p-2">
-          <div className="overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg gap-2">
+          <div className="overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg gap-2">
             {similarityData?.commonFollowers?.length ?? 0 > 0 ? (
               similarityData?.commonFollowers.map((following: Following, index) => (
                 <a
@@ -93,7 +93,7 @@ function ResultsComponent() {
         </div>
         <div className="w-full md:w-2/3 flex flex-col gap-2 h-full  ">
           <div className="flex flex-col justify-between rounded-3xl border border-white min-h-[15rem] bg-[url('/result-image.png')] bg-no-repeat bg-cover gap-12">
-            <div className='flex flex-row justify-end'>
+            {similarityData?.similarityScore ? <div className='flex flex-row justify-end'>
               <div className='flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-3 py-2 items-center gap-1 justify-center mr-2 mt-2' onClick={() => {
                 window.open(
                   `https://warpcast.com/~/compose?text=%F0%9F%8C%90%20My%20Digital%20Twin%20on%20Warpcast!%20%F0%9F%9A%80%0A%0ADiscovered%20something%20amazing!%20By%20comparing%20our%20owned%20tokens%20and%20NFTs,%20I%20have%20a%20similarity%20score%20of%20${similarityData?.similarityScore.toFixed(2)}%25%20with%20@${similarityData?.secondaryUsername}%20%0A%0AWant%20to%20find%20your%20own%20digital%20twin%20and%20see%20how%20similar%20you%20are%20with%20other%20users?%20Join%20Farmix%20now%20and%20explore%20the%20exciting%20world%20of%20digital%20assets!%0A%0Ahttps%3A%2F%2Ffarmix-web3bytes.vercel.app`,
@@ -107,33 +107,40 @@ function ResultsComponent() {
                   <img src='/share.png' alt='share logo' height={13} width={13} />
                 </div>
               </div>
-            </div>
-            <div className="flex flex-row justify-center gap-8">
-              <div className='flex flex-col text-3xl'>
-                You
-                <div>
-                  &
-                </div>
-                <div>
-                  {similarityData?.secondaryUsername}
-                </div>
-              </div>
-              <div className="flex flex-row text-7xl font-semibold text-center bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text items-end gap-1">
-                {similarityData?.similarityScore.toFixed(2)}
-                <div className='flex flex-col'>
-                  <div className=''>
-                    %
+            </div> : <div></div>}
+            {similarityData?.similarityScore ?
+              <div className="flex flex-row justify-center gap-8  mb-4">
+                <div className='flex flex-col text-3xl'>
+                  You
+                  <div>
+                    &
+                  </div>
+                  <div>
+                    {similarityData?.secondaryUsername}
                   </div>
                 </div>
-                <div className='ml-4 text-2xl text-white'>
-                  Similar
+                <div className="flex flex-row text-7xl font-semibold text-center bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text items-end gap-1">
+                  {similarityData?.similarityScore.toFixed(2)}
+                  <div className='flex flex-col'>
+                    <div className=''>
+                      %
+                    </div>
+                  </div>
+                  <div className='ml-4 text-2xl text-white'>
+                    Similar
+                  </div>
+                </div>
+              </div> :
+              <div className='flex flex-row justify-center'>
+                <div className='text-3xl mb-4'>
+                  No Similarity Score Found
                 </div>
               </div>
-            </div>
+            }
           </div>
           <div className="flex flex-col md:flex-row w-full gap-4 mt-2">
             <div className="w-full md:w-1/2 flex flex-col min-h-[calc(100vh-350px)] max-h-[calc(100vh-350px)] border border-white p-2 rounded-3xl justify-center">
-              <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg flex-1">
+              <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg flex-1">
                 {similarityData?.commonTokens.length ?? 0 > 0 ? (
                   similarityData?.commonTokens.map((token, index) => (
                     <div key={index} className="mb-2 flex flex-row gap-2 items-center px-4 py-2 bg-[#C3C1C1] rounded-full hover:bg-gray-600 transition-colors shadow-md">
