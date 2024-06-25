@@ -11,7 +11,20 @@ const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
   title: "Farmix",
-  description: "",
+  description: "Gauge Compatibility and Foster Connections",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://main.d1mk2y9g4ss2pn.amplifyapp.com/",
+    title: "Farmix",
+    description: "Gauge Compatibility and Foster Connections",
+    images: {
+      url: "https://main.d1mk2y9g4ss2pn.amplifyapp.com/metadata.png",
+      alt: "Farmix",
+    }
+
+  }
+
 };
 
 export default function RootLayout({
