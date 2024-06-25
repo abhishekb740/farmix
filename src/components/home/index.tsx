@@ -84,7 +84,7 @@ export default function Hero() {
       />
       <div className="w-full flex flex-col justify-center items-center gap-12">
         <Notification
-          message="We are not able to find that username."
+          message="Username does not exist!"
           show={showErrorNotification}
           onClose={() => setErrorShowNotification(false)}
         />
