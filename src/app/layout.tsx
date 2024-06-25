@@ -22,9 +22,7 @@ export const metadata: Metadata = {
       url: "https://main.d1mk2y9g4ss2pn.amplifyapp.com/metadata.png",
       alt: "Farmix",
     }
-
   }
-
 };
 
 export default function RootLayout({
