@@ -66,11 +66,6 @@ export default function Hero() {
 
   return (
     <main className="flex flex-col justify-center items-center min-h-screen w-full">
-      {loading && (
-        <div className="fixed inset-0 flex justify-center items-center mt-32 bg-opacity-50 z-50">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      )}
       <Notification
         message="Please enter a username to search."
         show={showNotification}
@@ -80,7 +75,7 @@ export default function Hero() {
         <div className="text-7xl">
           Enter a <i className="font-thin">Farcaster</i> Username
         </div>
-        <div className="w-full flex flex-row justify-center items-center mb-36">
+        <div className="w-full flex flex-row justify-center items-center">
           <div className="flex flex-row w-1/2 rounded-full py-1 px-5 items-center justify-center bg-white border shadow-[0_0_30px_#A675D8]">
             <input
               className="flex ml-4 w-full py-3 bg-transparent focus:outline-none text-black"
@@ -104,6 +99,11 @@ export default function Hero() {
             </Tooltip>
           </div>
         </div>
+        {loading && (
+          <div className="flex bg-opacity-50 z-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
       </div>
     </main>
   );

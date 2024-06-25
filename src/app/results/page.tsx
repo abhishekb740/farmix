@@ -73,7 +73,7 @@ function ResultsComponent() {
                   href={`https://warpcast.com/${following.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mb-2 flex items-center justify-between space-x-2 bg-[#C3C1C1] rounded-full p-4 hover:bg-gray-700 transition-colors"
+                  className="mb-2 flex items-center justify-between space-x-2 bg-[#C3C1C1] rounded-full px-4 py-2 hover:bg-gray-700 transition-colors"
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                   <img
@@ -92,32 +92,42 @@ function ResultsComponent() {
           <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Followings</h2>
         </div>
         <div className="w-full md:w-2/3 flex flex-col gap-2 h-full  ">
-          <div className="rounded-3xl flex flex-col items-center justify-around pb-4 border border-white min-h-[15rem] bg-[url('/result-image.png')] bg-no-repeat bg-cover bg-center">
-            <div className='flex flex-row text-3xl'>
-              You & {similarityData?.secondaryUsername}
-            </div>
-            <div className="flex flex-row text-7xl font-semibold text-center bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text items-end">
-              {similarityData?.similarityScore.toFixed(2)}
-              <div className='flex flex-col hover:cursor-pointer'>
-                <div className='flex flex-row gap-1 text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-3 py-2 items-center justify-center' onClick={() => {
-                  window.open(
-                    `https://warpcast.com/~/compose?text=%F0%9F%8C%90%20My%20Digital%20Twin%20on%20Warpcast!%20%F0%9F%9A%80%0A%0ADiscovered%20something%20amazing!%20By%20comparing%20our%20owned%20tokens%20and%20NFTs,%20I%20have%20a%20similarity%20score%20of%20${similarityData?.similarityScore.toFixed(2)}%25%20with%20@${similarityData?.secondaryUsername}%20%0A%0AWant%20to%20find%20your%20own%20digital%20twin%20and%20see%20how%20similar%20you%20are%20with%20other%20users?%20Join%20Farmix%20now%20and%20explore%20the%20exciting%20world%20of%20digital%20assets!%0A%0Ahttps%3A%2F%2Ffarmix-web3bytes.vercel.app`,
-                    "_blank",
-                  );
-                }}>
-                  <div>
-                    SHARE
-                  </div>
-                  <div>
-                    <img src='/share.png' alt='share logo' height={13} width={13} />
-                  </div>
+          <div className="flex flex-col justify-between rounded-3xl border border-white min-h-[15rem] bg-[url('/result-image.png')] bg-no-repeat bg-cover gap-12">
+            <div className='flex flex-row justify-end'>
+              <div className='flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-3 py-2 items-center gap-1 justify-center mr-2 mt-2' onClick={() => {
+                window.open(
+                  `https://warpcast.com/~/compose?text=%F0%9F%8C%90%20My%20Digital%20Twin%20on%20Warpcast!%20%F0%9F%9A%80%0A%0ADiscovered%20something%20amazing!%20By%20comparing%20our%20owned%20tokens%20and%20NFTs,%20I%20have%20a%20similarity%20score%20of%20${similarityData?.similarityScore.toFixed(2)}%25%20with%20@${similarityData?.secondaryUsername}%20%0A%0AWant%20to%20find%20your%20own%20digital%20twin%20and%20see%20how%20similar%20you%20are%20with%20other%20users?%20Join%20Farmix%20now%20and%20explore%20the%20exciting%20world%20of%20digital%20assets!%0A%0Ahttps%3A%2F%2Ffarmix-web3bytes.vercel.app`,
+                  "_blank",
+                );
+              }}>
+                <div>
+                  SHARE
                 </div>
-                <div className=''>
-                  %
+                <div>
+                  <img src='/share.png' alt='share logo' height={13} width={13} />
                 </div>
               </div>
-              <div className='ml-4 text-2xl text-white'>
-                Similar
+            </div>
+            <div className="flex flex-row justify-center gap-8">
+              <div className='flex flex-col text-3xl'>
+                You
+                <div>
+                  &
+                </div>
+                <div>
+                  {similarityData?.secondaryUsername}
+                </div>
+              </div>
+              <div className="flex flex-row text-7xl font-semibold text-center bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text items-end gap-1">
+                {similarityData?.similarityScore.toFixed(2)}
+                <div className='flex flex-col'>
+                  <div className=''>
+                    %
+                  </div>
+                </div>
+                <div className='ml-4 text-2xl text-white'>
+                  Similar
+                </div>
               </div>
             </div>
           </div>
@@ -126,7 +136,7 @@ function ResultsComponent() {
               <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-gray-800 bg-opacity-30 p-4 rounded-lg flex-1">
                 {similarityData?.commonTokens.length ?? 0 > 0 ? (
                   similarityData?.commonTokens.map((token, index) => (
-                    <div key={index} className="mb-2 flex flex-row gap-2 items-center p-4 bg-[#C3C1C1] rounded-full hover:bg-gray-600 transition-colors shadow-md">
+                    <div key={index} className="mb-2 flex flex-row gap-2 items-center px-4 py-2 bg-[#C3C1C1] rounded-full hover:bg-gray-600 transition-colors shadow-md">
                       <div className="bg-gradient-to-b from-violet-500 to-blue-600 w-8 h-8 rounded-full shadow-lg"></div>
                       <div className="text-lg font-medium text-black">{token}</div>
                     </div>
@@ -137,13 +147,13 @@ function ResultsComponent() {
               </div>
               <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Tokens</h2>
             </div>
-            <div className="w-full justify-between md:w-1/2 flex flex-col min-h-[calc(100vh-350px)] max-h-[calc(100vh-350px)] bg-[#C3C1C1] p-2 rounded-3xl">
+            <div className="w-full justify-between md:w-1/2 flex flex-col min-h-[calc(100vh-350px)] max-h-[calc(100vh-350px)] border border-white p-2 rounded-3xl">
               <div className="h-full overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg flex-1">
                 {similarityData?.commonNFTs?.length ?? 0 > 0 ? (
                   similarityData?.commonNFTs.map((nft, index) => (
                     <div key={index} className="mb-4 p-2">
                       {nft ? (
-                        <img src={nft} alt={`NFT ${index + 1}`} className="w-full bg-cover mb-2 rounded-md shadow-md" />
+                        <img src={nft === "https://data.debox.pro/nft/sbt/1.png" ? '/debox-nft.png' : nft} className="w-full bg-cover mb-2 rounded-md shadow-md" />
                       ) : (
                         <div className="text-center">Image not available</div>
                       )}
@@ -153,7 +163,7 @@ function ResultsComponent() {
                   <p className="text-center">No Shared NFTs Found</p>
                 )}
               </div>
-              <h2 className="text-3xl font-bold text-center pb-1 text-black"> <span className='font-normal'> Shared </span> NFTs</h2>
+              <h2 className="text-3xl font-bold text-center pb-1"> <span className='font-normal text-[#C3C1C1]'> Shared </span> NFTs</h2>
             </div>
           </div>
         </div>
