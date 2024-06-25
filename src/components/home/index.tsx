@@ -9,12 +9,14 @@ import { Notification } from "@/components";
 import { useSimilarity } from "@/contexts/similarityContext";
 
 export default function Hero() {
+  const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const { ready, authenticated, user } = usePrivy();
   const { setSimilarityData } = useSimilarity();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [showNotification, setShowNotification] = useState(false);
+  const [showErrorNotification, setErrorShowNotification] = useState(false);
   const disableSearching = !ready || (ready && authenticated);
 
   const getFCUserData = async (): Promise<void> => {
@@ -25,42 +27,51 @@ export default function Hero() {
     const secondaryUsername = username;
     if (user && user.farcaster && user.farcaster.username) {
       setLoading(true);
+      setError(""); // Clear any previous errors
       const primaryUsername = user.farcaster.username;
-      const resp = await fetch("https://farmix-server-production.up.railway.app/calculateSimilarity", {
-        method: "POST",
-        body: JSON.stringify({
-          primaryUsername: primaryUsername,
-          secondaryUsername: secondaryUsername,
-        }),
-        headers: {
-          "Content-Type": "application/json"
+      try {
+        const resp = await fetch(
+          "https://farmix-server-production.up.railway.app/calculateSimilarity",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              primaryUsername: primaryUsername,
+              secondaryUsername: secondaryUsername,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!resp.ok) {
+          const errorData = await resp.json();
+          throw new Error(
+            errorData.error || `Error: ${resp.status} ${resp.statusText}`
+          );
         }
-      });
 
-      if (!resp.ok) {
-        throw new Error(`Error: ${resp.status} ${resp.statusText}`);
+        const data = await resp.json();
+        console.log(data);
+        setSimilarityData({
+          similarityScore: data.similarityScore,
+          commonNFTs: data.commonNFTs,
+          commonTokens: data.commonTokens,
+          commonFollowers: data.commonFollowers,
+          primaryUsername,
+          secondaryUsername,
+        });
+
+        router.push("/results");
+      } catch (err: any) {
+        console.error("Error fetching similarity data:", err);
+        setErrorShowNotification(true);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      console.log("Similarity data:", resp);
-
-      const data = await resp.json();
-      console.log(data);
-      setLoading(false);
-      setSimilarityData({
-        similarityScore: data.similarityScore,
-        commonNFTs: data.commonNFTs,
-        commonTokens: data.commonTokens,
-        commonFollowers: data.commonFollowers,
-        primaryUsername,
-        secondaryUsername
-      });
-
-      router.push("/results");
     } else {
-      <Notification
-        message="You must be logged in to perform this action."
-        show={true}
-        onClose={() => setShowNotification(false)}
-      />
+      setShowNotification(true);
     }
   };
 
@@ -72,6 +83,11 @@ export default function Hero() {
         onClose={() => setShowNotification(false)}
       />
       <div className="w-full flex flex-col justify-center items-center gap-12">
+        <Notification
+          message="We are not able to find that username."
+          show={showErrorNotification}
+          onClose={() => setErrorShowNotification(false)}
+        />
         <div className="text-7xl">
           Enter a <i className="font-thin">Farcaster</i> Username
         </div>
@@ -105,6 +121,6 @@ export default function Hero() {
           </div>
         )}
       </div>
-    </main>
-  );
+    </main >
+  )
 }
