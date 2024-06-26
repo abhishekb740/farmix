@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://main.d1mk2y9g4ss2pn.amplifyapp.com/",
+    url: "https://farmix.online/",
     title: "Farmix",
     description: "Gauge Compatibility and Foster Connections",
     images: {
-      url: "https://main.d1mk2y9g4ss2pn.amplifyapp.com/metadata.png",
+      url: "https://farmix.online//metadata.png",
       alt: "Farmix",
     }
   }
