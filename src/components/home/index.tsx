@@ -77,11 +77,6 @@ export default function Hero() {
 
   return (
     <main className="flex flex-col justify-center items-center min-h-screen w-full">
-      <Notification
-        message="Please enter a username to search."
-        show={showNotification}
-        onClose={() => setShowNotification(false)}
-      />
       <div className="w-full flex flex-col justify-center items-center gap-12">
         <Notification
           message="Username does not exist!"
