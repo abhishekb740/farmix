@@ -1,6 +1,16 @@
 "use client"
 import { createContext, useContext, useState, ReactNode } from 'react';
 
+interface ChannelImage {
+  imageUrl: string;
+}
+
+interface Channel {
+  id: string;
+  channelName: string;
+  channel?: ChannelImage;
+}
+
 interface SimilarityData {
   similarityScore: number;
   commonNFTs: string[];
@@ -8,6 +18,7 @@ interface SimilarityData {
   commonFollowers: Following[];
   primaryUsername: string;
   secondaryUsername: string;
+  commonChannels: Channel[];
 }
 
 interface Following {

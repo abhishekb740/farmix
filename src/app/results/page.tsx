@@ -17,6 +17,7 @@ function ResultsComponent() {
   const { user, login, logout, ready, authenticated } = usePrivy();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const { similarityData } = useSimilarity();
+  console.log(similarityData?.commonChannels)
 
   const toggleDropdown = () => {
     setShowDropdown((prevShowDropdown) => !prevShowDropdown);
@@ -64,32 +65,61 @@ function ResultsComponent() {
         <div className="h-[1px] w-full bg-white border-white"></div>
       </div>
       <div className="flex flex-col md:flex-row w-full h-full pt-2 gap-4">
-        <div className="w-full justify-between md:w-1/3 mb-4 md:mb-0 flex flex-col rounded-3xl border border-white p-2">
-          <div className="overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg gap-2">
-            {similarityData?.commonFollowers?.length ?? 0 > 0 ? (
-              similarityData?.commonFollowers.map((following: Following, index) => (
-                <a
-                  key={index}
-                  href={`https://warpcast.com/${following.username}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mb-2 flex items-center justify-between space-x-2 bg-[#C3C1C1] rounded-full px-4 py-2 hover:bg-gray-700 transition-colors"
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <img
-                    src={following.profileImage || '/warpcast.svg'}
-                    onError={(e) => e.currentTarget.src = '/warpcast.svg'}
-                    alt={following?.profileDisplayName}
-                    className="w-8 h-8 rounded-full shadow-md"
-                  />
-                  <div className="text-lg text-black font-normal">{following.profileDisplayName}</div>
-                </a>
-              ))
-            ) : (
-              <p className="text-center">No Shared Followers Found</p>
-            )}
+        <div className='flex flex-col w-full md:w-1/3 gap-4 '>
+          <div className="w-full justify-between mb-4 md:mb-0 flex flex-col rounded-3xl border border-white p-2 h-full">
+            <div className="overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg gap-2 h-[10rem]">
+              {similarityData?.commonFollowers?.length ?? 0 > 0 ? (
+                similarityData?.commonFollowers.map((following: Following, index) => (
+                  <a
+                    key={index}
+                    href={`https://warpcast.com/${following.username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mb-2 flex items-center justify-between space-x-2 bg-[#C3C1C1] rounded-full px-4 py-2 hover:bg-gray-700 transition-colors"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <img
+                      src={following.profileImage || '/warpcast.svg'}
+                      onError={(e) => e.currentTarget.src = '/warpcast.svg'}
+                      alt={following?.profileDisplayName}
+                      className="w-8 h-8 rounded-full shadow-md"
+                    />
+                    <div className="text-lg text-black font-normal">{following.profileDisplayName}</div>
+                  </a>
+                ))
+              ) : (
+                <p className="text-center">No Shared Followings Found</p>
+              )}
+            </div>
+            <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Followings</h2>
           </div>
-          <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Followings</h2>
+          <div className="w-full justify-between mb-4 md:mb-0 flex flex-col rounded-3xl border border-white p-2 h-full  min-h-[calc(100vh-350px)] max-h-[calc(100vh-350px)]">
+            <div className="overflow-y-auto scroll-smooth scrollbar bg-opacity-30 p-4 rounded-lg gap-2">
+              {similarityData?.commonChannels?.length ?? 0 > 0 ? (
+                similarityData?.commonChannels.map((channel, index) => (
+                  <a
+                    key={channel.id}
+                    href={`https://warpcast.com/~/channel/${channel.channelName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mb-2 flex items-center justify-between space-x-2 bg-[#C3C1C1] rounded-full px-4 py-2 hover:bg-gray-700 transition-colors"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <img
+                      src={channel?.channel?.imageUrl || '/warpcast.svg'}
+                      onError={(e) => e.currentTarget.src = '/warpcast.svg'}
+                      alt={channel?.channelName}
+                      className="w-8 h-8 rounded-full shadow-md"
+                    />
+                    <div className="text-lg text-black font-normal">{channel?.channelName}</div>
+                  </a>
+                ))
+              ) : (
+                <p className="text-center">No Shared Channels Found</p>
+              )}
+            </div>
+            <h2 className="text-3xl font-bold text-center p-1"> <span className='text-[#C3C1C1] font-normal'> Shared </span> Channels</h2>
+          </div>
         </div>
         <div className="w-full md:w-2/3 flex flex-col gap-2 h-full  ">
           <div className="flex flex-col justify-between rounded-3xl border border-white min-h-[15rem] bg-[url('/result-image.png')] bg-no-repeat bg-cover gap-12">

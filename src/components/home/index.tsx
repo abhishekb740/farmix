@@ -60,6 +60,7 @@ export default function Hero() {
           commonFollowers: data.commonFollowers,
           primaryUsername,
           secondaryUsername,
+          commonChannels: data.commonChannels,
         });
 
         router.push("/results");
