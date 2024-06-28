@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Farmix",
     description: "Gauge Compatibility and Foster Connections",
     images: {
-      url: "https://farmix.online//metadata.png",
+      url: "https://farmix.online/metadata.png",
       alt: "Farmix",
     }
   }
