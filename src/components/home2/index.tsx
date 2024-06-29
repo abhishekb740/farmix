@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { Hero } from "@/components";
+import { useRouter } from "next/navigation";
 
 export default function Hero2() {
   const { user, login, logout, ready, authenticated } = usePrivy();
   const [showMainContent, setShowMainContent] = useState(true);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleScrollDown = () => {
     setShowMainContent(false);
@@ -18,7 +20,7 @@ export default function Hero2() {
     setShowDropdown((prevShowDropdown) => !prevShowDropdown);
   };
 
-  const handlelogout = () => {
+  const handleLogout = () => {
     setShowDropdown(false);
     logout();
   }
@@ -53,7 +55,7 @@ export default function Hero2() {
             <div className="w-full">
               <div className="h-[1px] w-full bg-white border-white"></div>
               <div className="flex flex-row items-center justify-between py-6" style={{ fontFamily: "Satoshi" }}>
-                <div className="text-md" style={{ letterSpacing: '8px' }}>ABOUT</div>
+                <div className="text-lg hover:cursor-pointer" style={{ letterSpacing: '6px' }} onClick={() => router.push('/leaderboard')}>Leaderboard</div>
                 <div className="text-6xl" style={{ fontFamily: 'Ares' }}>Farmix</div>
                 <div className="relative text-2xl">
                   <button
@@ -70,7 +72,7 @@ export default function Hero2() {
                   {showDropdown && (
                     <div className="absolute right-0 mt-1 w-40 bg-white rounded-md shadow-lg z-10">
                       <button
-                        onClick={handlelogout}
+                        onClick={handleLogout}
                         className="flex flex-row items-center justify-start gap-4 w-full text-left px-4 py-1 rounded-md bg-white text-black hover:bg-gray-200"
                       >
                         <img src="/logout.png" height={20} width={20} alt="logout logo" />
