@@ -58,9 +58,11 @@ export default function Leaderboard() {
         fetchLeaderboardData();
     }, [ready, authenticated, user]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    if (loading) return (
+        <div className="flex bg-opacity-50 z-50 justify-center items-center min-h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+    );
 
     if (showNotification) {
         return showNotificationOnLeaderboard();
@@ -119,13 +121,13 @@ export default function Leaderboard() {
                 </div>
                 <div className="h-[1px] w-full bg-white border-white"></div>
             </div>
-            <div className="p-4 w-full mt-12">
+            <div className="p-4 w-full mt-12" style={{ fontFamily: "Satoshi" }}>
                 {leaderboardData ? (
                     <div className="flex flex-row justify-center gap-12">
                         {leaderboardData.digital_twins.slice(0, 5).map((twin, index) => (
                             <div
                                 key={index}
-                                className="bg-white bg-opacity-10 p-4 rounded-lg shadow-md backdrop-blur-sm cursor-pointer min-w-[10rem]"
+                                className="bg-white bg-opacity-10 p-4 rounded-lg shadow-md backdrop-blur-sm cursor-pointer min-w-[10rem] h-[10rem] flex flex-col justify-center items-center"
                                 onClick={() => handleMouseEnter(index + 1, twin, leaderboardData.similarity_score[index])}
                             >
                                 <div className="text-xl font-bold">Rank {index + 1}</div>
@@ -139,11 +141,18 @@ export default function Leaderboard() {
             </div>
             {modalData && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-                    <div className="bg-white p-6 rounded-lg shadow-lg text-black relative">
-                        <div className="absolute top-0 right-0 p-2 cursor-pointer" onClick={handleMouseLeave}>X</div>
-                        <div className="text-xl font-bold mb-2">Rank {modalData.rank}</div>
-                        <div className="text-lg">Username: {modalData.username}</div>
-                        <div className="text-lg">Similarity Score: {modalData.similarityScore}</div>
+                    <div className="bg-white p-8 rounded-lg shadow-lg text-black relative min-w-[20%]">
+                        <button
+                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                            onClick={handleMouseLeave}
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        <div className="text-xl font-bold mb-4">Rank {modalData.rank}</div>
+                        <div className="text-lg font-medium mb-2">{modalData.username}</div>
+                        <div className="text-4xl font-bold bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text">{modalData.similarityScore}%</div>
                     </div>
                 </div>
             )}
