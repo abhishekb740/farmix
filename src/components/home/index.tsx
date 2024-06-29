@@ -31,7 +31,8 @@ export default function Hero() {
       const primaryUsername = user.farcaster.username;
       try {
         const resp = await fetch(
-          "https://farmix-server-production.up.railway.app/calculateSimilarity",
+          // "https://farmix-server-production.up.railway.app/calculateSimilarity",
+          "http://localhost:8081/calculateSimilarity",
           {
             method: "POST",
             body: JSON.stringify({
