@@ -34,7 +34,7 @@ export default function Leaderboard() {
             }
             try {
                 const username = user?.farcaster?.username;
-                const response = await fetch("http://localhost:8081/getUserLeaderboard", {
+                const response = await fetch("https://farmix-server-production.up.railway.app/getUserLeaderboard", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
