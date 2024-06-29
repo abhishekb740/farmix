@@ -85,6 +85,18 @@ export default function Leaderboard() {
         setModalData(null);
     };
 
+    const generateShareableLink = () => {
+        if (!leaderboardData) return '';
+
+        const size = leaderboardData.digital_twins.length;
+
+        const twinLinks = leaderboardData.digital_twins.map((twin, index) => (
+            `%F0%9F%94%8A%20@${twin}%20-%20${leaderboardData.similarity_score[index].toFixed(2)}%25`
+        )).join('%0A');
+
+        return `https://warpcast.com/~/compose?text=Hey,%20${size===1 ? "here%20is": "here's" }%20my%20top%20${size}%20digital%20twins%20on%20Farcaster%20via%20Farmix!%0A%0A${twinLinks}%0A%0A%F0%9F%9A%80%20Discover%20your%20own%20digital%20twins%20with%20Farmix%20on%20Warpcast!%0A%0Ahttps%3A%2F%2Ffarmix.online`;
+    };
+
     return (
         <div className="min-h-screen w-full bg-[url('/Home2.png')] bg-cover bg-no-repeat bg-center flex flex-col items-center p-4">
             <div className="w-full">
@@ -130,8 +142,8 @@ export default function Leaderboard() {
                                 className="bg-white bg-opacity-10 p-4 rounded-lg shadow-md backdrop-blur-sm cursor-pointer min-w-[10rem] h-[10rem] flex flex-col justify-center items-center"
                                 onClick={() => handleMouseEnter(index + 1, twin, leaderboardData.similarity_score[index])}
                             >
-                                <div className="text-xl font-bold">Rank {index + 1}</div>
-                                <div className="text-lg">{twin}</div>
+                                <div className="text-xl font-bold ">Rank {index + 1}</div>
+                                <div className="text-lg text-black">{twin}</div>
                             </div>
                         ))}
                     </div>
@@ -146,9 +158,22 @@ export default function Leaderboard() {
                     </div>
                 )}
             </div>
+            <div className='flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-6 py-2 items-center gap-3 justify-center mr-2 mt-4 hover:cursor-pointer' onClick={() => {
+                window.open(
+                    generateShareableLink(),
+                    "_blank",
+                );
+            }}>
+                <div>
+                    SHARE
+                </div>
+                <div>
+                    <img src='/share.png' alt='share logo' height={13} width={13} />
+                </div>
+            </div>
             {modalData && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-                    <div className="bg-white p-8 rounded-lg shadow-lg text-black relative min-w-[20%]">
+                    <div className="bg-white p-8 rounded-lg shadow-lg text-black relative min-w-[20%] flex flex-col">
                         <button
                             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
                             onClick={handleMouseLeave}
@@ -160,6 +185,19 @@ export default function Leaderboard() {
                         <div className="text-xl font-bold mb-4">Rank {modalData.rank}</div>
                         <div className="text-lg font-medium mb-2">{modalData.username}</div>
                         <div className="text-4xl font-bold bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text">{modalData.similarityScore}%</div>
+                        <div className='flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-3 py-2 items-center gap-1 justify-center mr-2 mt-4 hover:cursor-pointer' onClick={() => {
+                            window.open(
+                                ``,
+                                "_blank",
+                            );
+                        }}>
+                            <div>
+                                SHARE
+                            </div>
+                            <div>
+                                <img src='/share.png' alt='share logo' height={13} width={13} />
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
