@@ -94,7 +94,7 @@ export default function Leaderboard() {
             `%F0%9F%94%8A%20@${twin}%20-%20${leaderboardData.similarity_score[index].toFixed(2)}%25`
         )).join('%0A');
 
-        return `https://warpcast.com/~/compose?text=Hey,%20${size===1 ? "here%20is": "here's" }%20my%20top%20${size}%20digital%20twins%20on%20Farcaster%20via%20Farmix!%0A%0A${twinLinks}%0A%0A%F0%9F%9A%80%20Discover%20your%20own%20digital%20twins%20with%20Farmix%20on%20Warpcast!%0A%0Ahttps%3A%2F%2Ffarmix.online`;
+        return `https://warpcast.com/~/compose?text=Hey,%20${size===1 ? "here%20is": "here's" }%20my%20top%20${size===1 ? "" : size}%20digital%20${size===1 ? 'twin' : 'twins'}%20on%20Farcaster%20via%20Farmix!%0A%0A${twinLinks}%0A%0A%F0%9F%9A%80%20Discover%20your%20own%20digital%20twins%20with%20Farmix%20on%20Warpcast!%0A%0Ahttps%3A%2F%2Ffarmix.online`;
     };
 
     return (
@@ -187,7 +187,7 @@ export default function Leaderboard() {
                         <div className="text-4xl font-bold bg-gradient-to-b from-[#FC00FF] via-[#7E6EEE] to-[#00DBDE] text-transparent bg-clip-text">{modalData.similarityScore}%</div>
                         <div className='flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-3 py-2 items-center gap-1 justify-center mr-2 mt-4 hover:cursor-pointer' onClick={() => {
                             window.open(
-                                ``,
+                                `https://warpcast.com/~/compose?text=%F0%9F%8C%90%20My%20Digital%20Twin%20on%20Warpcast!%20%F0%9F%9A%80%0A%0ADiscovered%20something%20amazing!%20By%20comparing%20our%20owned%20digital%20assets%20and%20mutual%20connections,%20I%20have%20a%20similarity%20score%20of%20${modalData.similarityScore.toFixed(2)}%25%20with%20@${modalData.username}%20%0A%0AWant%20to%20find%20your%20own%20digital%20twin%20and%20see%20how%20similar%20you%20are%20with%20other%20users?%20Join%20Farmix%20now%20and%20explore%20the%20exciting%20world%20of%20digital%20assets!%0A%0Ahttps%3A%2F%2Ffarmix.online`,
                                 "_blank",
                             );
                         }}>
