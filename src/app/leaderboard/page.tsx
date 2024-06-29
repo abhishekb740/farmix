@@ -124,7 +124,7 @@ export default function Leaderboard() {
             <div className="p-4 w-full mt-12" style={{ fontFamily: "Satoshi" }}>
                 {leaderboardData ? (
                     <div className="flex flex-row justify-center gap-12">
-                        {leaderboardData.digital_twins.slice(0, 5).map((twin, index) => (
+                        {leaderboardData.digital_twins.map((twin, index) => (
                             <div
                                 key={index}
                                 className="bg-white bg-opacity-10 p-4 rounded-lg shadow-md backdrop-blur-sm cursor-pointer min-w-[10rem] h-[10rem] flex flex-col justify-center items-center"
@@ -136,7 +136,14 @@ export default function Leaderboard() {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-white">No data available</div>
+                    <div className="text-2xl text-white flex flex-col items-center gap-8">
+                        <div>
+                            No data available
+                        </div>
+                        <div>
+                            Please start by searching for a username on the Home Page
+                        </div>
+                    </div>
                 )}
             </div>
             {modalData && (
