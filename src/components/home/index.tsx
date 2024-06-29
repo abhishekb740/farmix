@@ -9,25 +9,25 @@ import { Notification } from "@/components";
 import { useSimilarity } from "@/contexts/similarityContext";
 
 export default function Hero() {
-  const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const { ready, authenticated, user } = usePrivy();
   const { setSimilarityData } = useSimilarity();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [showNotification, setShowNotification] = useState(false);
-  const [showErrorNotification, setErrorShowNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const disableSearching = !ready || (ready && authenticated);
 
   const getFCUserData = async (): Promise<void> => {
     if (!username) {
+      setErrorMessage("Please enter a username");
       setShowNotification(true);
       return;
     }
     const secondaryUsername = username;
     if (user && user.farcaster && user.farcaster.username) {
       setLoading(true);
-      setError(""); // Clear any previous errors
+      setErrorMessage("");
       const primaryUsername = user.farcaster.username;
       try {
         const resp = await fetch(
@@ -65,9 +65,9 @@ export default function Hero() {
 
         router.push("/results");
       } catch (err: any) {
-        console.error("Error fetching similarity data:", err);
-        setErrorShowNotification(true);
-        setError(err.message);
+        console.error("Error fetching similarity data:", err.message);
+        setErrorMessage(err.message);
+        setShowNotification(true);
       } finally {
         setLoading(false);
       }
@@ -80,9 +80,12 @@ export default function Hero() {
     <main className="flex flex-col justify-center items-center min-h-screen w-full">
       <div className="w-full flex flex-col justify-center items-center gap-12">
         <Notification
-          message="Username does not exist!"
-          show={showErrorNotification}
-          onClose={() => setErrorShowNotification(false)}
+          message={errorMessage}
+          show={showNotification}
+          onClose={() => {
+            setErrorMessage("");
+            setShowNotification(false);
+          }}
         />
         <div className="text-7xl">
           Enter a <i className="font-thin">Farcaster</i> Username
@@ -112,8 +115,9 @@ export default function Hero() {
           </div>
         </div>
         {loading && (
-          <div className="flex bg-opacity-50 z-50">
+          <div className="flex flex-col justify-center items-center bg-opacity-50 z-50 gap-4">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="text-xl">This process might take up to a minute to load if the user has numerous assets.</div>
           </div>
         )}
       </div>
