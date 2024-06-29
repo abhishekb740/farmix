@@ -115,8 +115,9 @@ export default function Hero() {
           </div>
         </div>
         {loading && (
-          <div className="flex bg-opacity-50 z-50">
+          <div className="flex flex-col justify-center items-center bg-opacity-50 z-50 gap-4">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="text-xl">This process might take up to a minute to load if the user has numerous assets.</div>
           </div>
         )}
       </div>
