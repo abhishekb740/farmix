@@ -133,7 +133,7 @@ export default function Leaderboard() {
         >
           <div
             className="text-4xl hover:cursor-pointer pl-8"
-            style={{ fontFamily: "Ares Broken VF Regular" }}
+            style={{ fontFamily: 'Ares' }}
             onClick={() => router.push("/")}
           >
             Farmix
