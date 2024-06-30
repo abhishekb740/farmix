@@ -12,7 +12,7 @@ export default function Notification ({ message, show, onClose }: NotificationPr
     if (show) {
       const timer = setTimeout(() => {
         onClose();
-      }, 4000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }
