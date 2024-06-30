@@ -17,6 +17,7 @@
     "pnpm": "^9.4.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-farcaster-embed": "^1.7.0",
     "react-icons": "^5.2.1"
   },
   "devDependencies": {
