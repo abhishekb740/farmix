@@ -87,7 +87,7 @@ export default function Hero() {
             setShowNotification(false);
           }}
         />
-        <div className="text-7xl">
+        <div className="text-7xl font-normal font-sans">
           Enter a <i className="font-thin">Farcaster</i> Username
         </div>
         <div className="w-full flex flex-row justify-center items-center">

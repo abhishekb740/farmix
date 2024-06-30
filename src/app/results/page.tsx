@@ -33,7 +33,7 @@ function ResultsComponent() {
       <div className="w-full">
         <div className="h-[1px] w-full bg-white border-white"></div>
         <div className="flex flex-row items-center justify-between py-2" style={{ fontFamily: "Satoshi" }}>
-          <div className="text-4xl hover:cursor-pointer pl-8" style={{ fontFamily: 'Ares Broken VF Regular' }} onClick={() => router.push("/")}>Farmix</div>
+          <div className="text-4xl hover:cursor-pointer pl-8" style={{ fontFamily: 'Ares' }} onClick={() => router.push("/")}>Farmix</div>
           <div className="text-md hover:cursor-pointer" style={{ letterSpacing: '4px' }} onClick={() => router.push('/leaderboard')}>LEADERBOARD</div>
           <div className="relative text-xl">
             <button
