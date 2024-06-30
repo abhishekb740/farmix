@@ -26,9 +26,14 @@ export default function Hero() {
     }
     const secondaryUsername = username;
     if (user && user.farcaster && user.farcaster.username) {
+      const primaryUsername = user.farcaster.username;
+      if (primaryUsername.toLowerCase() === secondaryUsername.toLowerCase()) {
+        setErrorMessage("You can't be your digital twin!");
+        setShowNotification(true);
+        return;
+      }
       setLoading(true);
       setErrorMessage("");
-      const primaryUsername = user.farcaster.username;
       try {
         const resp = await fetch(
           "https://farmix-server-production.up.railway.app/calculateSimilarity",
@@ -76,6 +81,12 @@ export default function Hero() {
     }
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      getFCUserData();
+    }
+  };
+
   return (
     <main className="flex flex-col justify-center items-center min-h-screen w-full">
       <div className="w-full flex flex-col justify-center items-center gap-12">
@@ -96,6 +107,7 @@ export default function Hero() {
               className="flex ml-4 w-full py-3 bg-transparent focus:outline-none text-black"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
             <Tooltip
               content="Login first"
@@ -117,10 +129,13 @@ export default function Hero() {
         {loading && (
           <div className="flex flex-col justify-center items-center bg-opacity-50 z-50 gap-4">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            <div className="text-xl">This process might take up to a minute to load if the user has numerous assets.</div>
+            <div className="text-xl">
+              This process might take up to a minute to load if the user has
+              numerous assets.
+            </div>
           </div>
         )}
       </div>
-    </main >
-  )
+    </main>
+  );
 }
