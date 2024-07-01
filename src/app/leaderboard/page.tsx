@@ -3,9 +3,12 @@
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import "react-farcaster-embed/dist/styles.css";
-import { FarcasterEmbed } from "react-farcaster-embed/dist/client";
 import { Notification } from "@/components";
+import { FaRegHeart } from "react-icons/fa";
+import Image from 'next/image';
+import { FaRegCommentAlt } from "react-icons/fa";
+import { FaRetweet } from "react-icons/fa6";
+import { FaRegBookmark } from "react-icons/fa";
 
 export default function Leaderboard() {
   const router = useRouter();
@@ -31,6 +34,17 @@ export default function Leaderboard() {
         onClose={() => setShowNotification(false)}
       />
     );
+  };
+
+  const getTodayDate = (date: Date) => {
+    const formattedDate = date
+      .toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+      .replace(",", "");
+    return formattedDate;
   };
 
   useEffect(() => {
@@ -123,6 +137,7 @@ export default function Leaderboard() {
     }%20on%20Farcaster!%0A%0A${twinLinks}%0A%0A%F0%9F%9A%80%20Discover%20your%20own%20digital%20twins%20with%20Farmix%20on%20Warpcast!%0A%0Ahttps%3A%2F%2Ffarmix.online`;
   };
 
+  console.log(leaderboardData);
   return (
     <div className="min-h-screen w-full bg-[url('/Home2.png')] bg-cover bg-no-repeat bg-center flex flex-col items-center p-4">
       <div className="w-full">
@@ -133,7 +148,7 @@ export default function Leaderboard() {
         >
           <div
             className="text-4xl hover:cursor-pointer pl-8"
-            style={{ fontFamily: 'Ares' }}
+            style={{ fontFamily: "Ares" }}
             onClick={() => router.push("/")}
           >
             Farmix
@@ -163,7 +178,7 @@ export default function Leaderboard() {
                   onClick={handleLogout}
                   className="flex flex-row items-center justify-start gap-4 w-full text-left px-4 py-1 rounded-md bg-white text-black hover:bg-gray-200"
                 >
-                  <img
+                  <Image
                     src="/logout.png"
                     height={20}
                     width={20}
@@ -204,20 +219,62 @@ export default function Leaderboard() {
           </div>
         )}
       </div>
-      <div
-        className="flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-6 py-2 items-center gap-3 justify-center mr-2 mt-4 hover:cursor-pointer transform transition duration-500 hover:scale-105 shadow-lg hover:shadow-xl"
-        onClick={() => {
-          window.open(generateShareableLink(), "_blank");
-        }}
-      >
-        <div>SHARE</div>
-        <div>
-          <img src="/share.png" alt="share logo" height={13} width={13} />
-        </div>
-      </div>
-      <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-6 rounded-lg shadow-lg max-w-xl mx-auto text-white mt-3 mb-1">
-        <FarcasterEmbed url="https://warpcast.com/vaibhav0806/0x8b0c07d1" />
-      </div>
+      {leaderboardData && leaderboardData?.digital_twins?.length > 0 ? (
+        <>
+          <div
+            className="flex flex-row text-sm bg-gradient-to-r from-[#FC00FF] to-[#7087D8] text-white rounded-full px-6 py-2 items-center gap-3 justify-center mr-2 mt-4 hover:cursor-pointer transform transition duration-500 hover:scale-105 shadow-lg hover:shadow-xl"
+            onClick={() => {
+              window.open(generateShareableLink(), "_blank");
+            }}
+          >
+            <div>SHARE</div>
+            <div>
+              <Image src="/share.png" alt="share logo" height={13} width={13} />
+            </div>
+          </div>
+          <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-6 rounded-lg shadow-lg max-w-xl mx-auto text-white mt-3 mb-1">
+            <div className="flex items-center">
+              <img
+                src={user?.farcaster?.pfp || ""}
+                alt="Profile Picture"
+                className="rounded-full mr-3"
+                width={45}
+              />
+              <div>
+                <strong>{user?.farcaster?.displayName}</strong> <br />
+                <span className="text-sm text-gray-300">
+                  @{user?.farcaster?.username} • {getTodayDate(new Date())}
+                </span>
+              </div>
+            </div>
+            <p className="mt-4">
+              Hey, {"here's"} my top {leaderboardData?.digital_twins.length > 1? leaderboardData?.digital_twins.length: ""} digital {leaderboardData?.digital_twins.length > 1? "twins": "twin"} on Farcaster! <br /> <br />
+              {leaderboardData?.digital_twins.map((twin, index) => (
+                <div key={index}>
+                  🔊 @{twin} - {leaderboardData.similarity_score[index]}% <br />
+                </div>
+              ))}
+            </p>
+            <p className="mt-4">
+              🚀 Discover your own digital twins with Farmix on Warpcast! <br />
+              <a
+                href="https://farmix.online"
+                className="text-yellow-400 hover:underline"
+              >
+                https://farmix.online
+              </a>
+            </p>
+            <div className="flex justify-start gap-10 text-sm text-gray-300 mt-4">
+              <FaRegHeart />
+              <FaRegCommentAlt />
+              <FaRetweet />
+              <FaRegBookmark />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div></div>
+      )}
 
       {modalData && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
@@ -261,7 +318,12 @@ export default function Leaderboard() {
             >
               <div>SHARE</div>
               <div>
-                <img src="/share.png" alt="share logo" height={13} width={13} />
+                <Image
+                  src="/share.png"
+                  alt="share logo"
+                  width={13}
+                  height={13}
+                />
               </div>
             </div>
           </div>
